@@ -1,0 +1,24 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Export configs — can contain keystore/store passwords
+export_presets.cfg
+export.cfg
+
+# Build output
+/build/
+/export/
+
+# Auto-generated translations (regenerated from CSV)
+*.translation
+
+# Mono / C#
+.mono/
+data_*/
+mono_crash.*.json
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
