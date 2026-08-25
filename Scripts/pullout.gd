@@ -1,17 +1,21 @@
 extends Node2D
-var show = false
 
-# Called when the node enters the scene tree for the first time.
+const CLOSED_POS := Vector2(41, -140)
+const OPEN_Y := -35.0
+const SLIDE_TIME := 0.5
+
+var _tween: Tween
+
+
 func _ready() -> void:
-	position = Vector2(41, -140)
-		
-		
-func _process(delta: float) -> void:
-	if Global.Pulldown == true and show == false:
-		show == true
-		var tween = create_tween()
-		tween.tween_property($".", "position",Vector2(position.x,-35), 1)
-	if Global.Pulldown == false and show == true:
-		show == false
-		var tween = create_tween()
-		tween.tween_property($".", "position",Vector2(position.x,-140), 1)
+	position = CLOSED_POS
+	Global.pulldown_changed.connect(_on_pulldown_changed)
+
+
+func _on_pulldown_changed(is_down: bool) -> void:
+	var target_y := OPEN_Y if is_down else CLOSED_POS.y
+	if _tween and _tween.is_valid():
+		_tween.kill()
+	_tween = create_tween()
+	_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	_tween.tween_property(self, "position:y", target_y, SLIDE_TIME)

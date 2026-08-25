@@ -1,0 +1,131 @@
+[gd_scene format=3 uid="uid://b0okp4g3flip1"]
+
+[ext_resource type="Script" path="res://Scripts/book.gd" id="1_book0"]
+
+[node name="Book" type="Node2D" unique_id=602144893]
+script = ExtResource("1_book0")
+
+[node name="Cover" type="ColorRect" parent="." unique_id=602144894]
+offset_left = -120.0
+offset_top = -150.0
+offset_right = 120.0
+offset_bottom = 150.0
+mouse_filter = 2
+color = Color(0.34509805, 0.21960784, 0.1254902, 1)
+
+[node name="CoverFrame" type="ColorRect" parent="." unique_id=602144895]
+offset_left = -104.0
+offset_top = -134.0
+offset_right = 104.0
+offset_bottom = 134.0
+mouse_filter = 2
+color = Color(0.41960785, 0.27450982, 0.16078432, 1)
+
+[node name="CoverTitle" type="Label" parent="." unique_id=602144896]
+offset_left = -100.0
+offset_top = -46.0
+offset_right = 100.0
+offset_bottom = -6.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9019608, 0.8235294, 0.6784314, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "PERSONNEL
+DIRECTORY"
+
+[node name="CoverSubtitle" type="Label" parent="." unique_id=602144897]
+offset_left = -100.0
+offset_top = 2.0
+offset_right = 100.0
+offset_bottom = 22.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.6901961, 0.5921569, 0.45882353, 1)
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 1
+text = "workspaces & specialties"
+
+[node name="BackText" type="Label" parent="." unique_id=602144898]
+offset_left = -100.0
+offset_top = -12.0
+offset_right = 100.0
+offset_bottom = 12.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.6901961, 0.5921569, 0.45882353, 1)
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "END OF RECORD"
+
+[node name="Paper" type="ColorRect" parent="." unique_id=602144899]
+offset_left = -110.0
+offset_top = -140.0
+offset_right = 110.0
+offset_bottom = 140.0
+mouse_filter = 2
+color = Color(0.9372549, 0.9098039, 0.827451, 1)
+
+[node name="PageHeading" type="Label" parent="." unique_id=602144900]
+offset_left = -98.0
+offset_top = -130.0
+offset_right = 98.0
+offset_bottom = -112.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.16078432, 0.12941177, 0.09803922, 1)
+theme_override_font_sizes/font_size = 13
+text = "WORKSPACES"
+
+[node name="HeadingIndex" type="Label" parent="." unique_id=602144901]
+offset_left = -98.0
+offset_top = -128.0
+offset_right = 98.0
+offset_bottom = -112.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.4509804, 0.39215687, 0.32156864, 1)
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 2
+text = "1 / 4"
+
+[node name="HeadingRule" type="ColorRect" parent="." unique_id=602144902]
+offset_left = -98.0
+offset_top = -110.0
+offset_right = 98.0
+offset_bottom = -108.5
+mouse_filter = 2
+color = Color(0.16078432, 0.12941177, 0.09803922, 1)
+
+[node name="Content" type="RichTextLabel" parent="." unique_id=602144903]
+offset_left = -98.0
+offset_top = -104.0
+offset_right = 98.0
+offset_bottom = 110.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.16078432, 0.12941177, 0.09803922, 1)
+theme_override_font_sizes/normal_font_size = 9
+bbcode_enabled = true
+text = ""
+
+[node name="PageNumber" type="Label" parent="." unique_id=602144904]
+offset_left = -60.0
+offset_top = 118.0
+offset_right = 60.0
+offset_bottom = 132.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.4509804, 0.39215687, 0.32156864, 1)
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+text = "1 / 6"
+
+[node name="PrevCorner" type="ColorRect" parent="." unique_id=602144905]
+offset_left = -108.0
+offset_top = 114.0
+offset_right = -86.0
+offset_bottom = 136.0
+color = Color(0.6156863, 0.6156863, 0.59607846, 1)
+
+[node name="NextCorner" type="ColorRect" parent="." unique_id=602144906]
+offset_left = 86.0
+offset_top = 114.0
+offset_right = 108.0
+offset_bottom = 136.0
+color = Color(0.6156863, 0.6156863, 0.59607846, 1)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://qarsclr404j4"]
 
-[ext_resource type="Script" uid="uid://cytrut36abwn4" path="res://drop_button.gd" id="1_l13r2"]
+[ext_resource type="Script" uid="uid://cytrut36abwn4" path="res://Scripts/drop_button.gd" id="1_l13r2"]
 [ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="2_cgxq1"]
 
 [node name="DropButton" type="Node2D" unique_id=1045857545]

@@ -1,30 +1,47 @@
 extends Node2D
 
+const START_POS := Vector2(-174, -22)
+const COUNTER_X := -107.0
+const ENTER_DELAY := 0.4
+const WALK_TIME := 1.0
 
-# Called when the node enters the scene tree for the first time.
+var tween: Tween
+var arriving := false
+
+
 func _ready() -> void:
-	position = Vector2(-174, -22)
-		
-		
-func _process(delta: float) -> void:
-	if Global.Next == true:
-		print("recieve")
-		Global.Next = false
-		position.x = -174
-		RandomColor()
-		await get_tree().create_timer(0.4).timeout
-		var tween = create_tween()
-		tween.tween_property($".", "position", Vector2(-107, $".".position.y), 1)
-		Global.Next = false
+	position = START_POS
+	Global.next_customer_requested.connect(_on_next_customer_requested)
 
 
-func RandomColor():
-	var r = randi_range(20,150)
-	var g = randi_range(20,150)
-	var b = randi_range(20,150)
-	$Body.modulate.r = r
-	$Body.modulate.g = g
-	$Body.modulate.b = b
-	$Head.modulate.r = r
-	$Head.modulate.g = g
-	$Head.modulate.b = b
+func _on_next_customer_requested() -> void:
+	if arriving == true:
+		return
+	arriving = true
+
+	if tween and tween.is_valid():
+		tween.kill()
+	position = START_POS
+	randomize_color()
+
+	tween = create_tween()
+	tween.tween_interval(ENTER_DELAY)
+	tween.tween_property(self, "position:x", COUNTER_X, WALK_TIME) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.finished.connect(on_arrived)
+
+
+func on_arrived() -> void:
+	arriving = false
+	# Reaching the counter is what hands the paperwork over.
+	Global.customer_arrived.emit()
+
+
+func randomize_color() -> void:
+	var tint := Color(
+		randi_range(20, 150) / 255.0,
+		randi_range(20, 150) / 255.0,
+		randi_range(20, 150) / 255.0
+	)
+	$Body.modulate = tint
+	$Head.modulate = tint

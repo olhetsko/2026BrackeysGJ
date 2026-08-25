@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://dg4urxb4txxs2"]
+
+[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_mj70b"]
+[ext_resource type="Script" uid="uid://qho0ylaedjec" path="res://Scripts/document.gd" id="2_doc0h"]
+
+[node name="Document" type="Node2D" unique_id=771700449]
+script = ExtResource("2_doc0h")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1557638243]
+position = Vector2(-0.78125, 5.9604645e-08)
+scale = Vector2(0.45918772, 1)
+texture = ExtResource("1_mj70b")
+
+[node name="ID Card" type="Label" parent="." unique_id=310442001]
+offset_left = -56.0
+offset_top = -90.0
+offset_right = 56.0
+offset_bottom = -74.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 13
+text = "ID CARD"
+horizontal_alignment = 1
+
+[node name="Rule" type="ColorRect" parent="." unique_id=1224408881]
+offset_left = -56.0
+offset_top = -72.0
+offset_right = 56.0
+offset_bottom = -70.5
+mouse_filter = 2
+color = Color(0.12, 0.1, 0.09, 1)
+
+[node name="Fields" type="Node2D" parent="." unique_id=1904425699]
+
+[node name="NameCaption" type="Label" parent="Fields" unique_id=126073195]
+offset_left = -56.0
+offset_top = -62.0
+offset_right = 56.0
+offset_bottom = -52.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "NAME"
+
+[node name="NameValue" type="Label" parent="Fields" unique_id=126073196]
+offset_left = -56.0
+offset_top = -53.0
+offset_right = 56.0
+offset_bottom = -37.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "name"
+clip_text = true
+
+[node name="AgeCaption" type="Label" parent="Fields" unique_id=704245098]
+offset_left = -56.0
+offset_top = -32.0
+offset_right = -2.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "AGE"
+
+[node name="AgeValue" type="Label" parent="Fields" unique_id=704245099]
+offset_left = -56.0
+offset_top = -23.0
+offset_right = -2.0
+offset_bottom = -7.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "age"
+clip_text = true
+
+[node name="RaceCaption" type="Label" parent="Fields" unique_id=1804344233]
+offset_left = 2.0
+offset_top = -32.0
+offset_right = 56.0
+offset_bottom = -22.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "RACE"
+
+[node name="RaceValue" type="Label" parent="Fields" unique_id=1804344234]
+offset_left = 2.0
+offset_top = -23.0
+offset_right = 56.0
+offset_bottom = -7.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "race"
+clip_text = true
+
+[node name="WorkspaceCaption" type="Label" parent="Fields" unique_id=772204633]
+offset_left = -56.0
+offset_top = -2.0
+offset_right = 56.0
+offset_bottom = 8.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "WORKSPACE"
+
+[node name="WorkspaceValue" type="Label" parent="Fields" unique_id=772204634]
+offset_left = -56.0
+offset_top = 7.0
+offset_right = 56.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "workspace"
+clip_text = true
+
+[node name="SpecialtyCaption" type="Label" parent="Fields" unique_id=1271963481]
+offset_left = -56.0
+offset_top = 28.0
+offset_right = 56.0
+offset_bottom = 38.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "SPECIALTY"
+
+[node name="SpecialtyValue" type="Label" parent="Fields" unique_id=1271963482]
+offset_left = -56.0
+offset_top = 37.0
+offset_right = 56.0
+offset_bottom = 53.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "specialty"
+clip_text = true
+
+[node name="SectorCaption" type="Label" parent="Fields" unique_id=1977371510]
+offset_left = -56.0
+offset_top = 58.0
+offset_right = -2.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "SECTOR"
+
+[node name="SectorValue" type="Label" parent="Fields" unique_id=1977371511]
+offset_left = -56.0
+offset_top = 67.0
+offset_right = -2.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "sector"
+clip_text = true
+
+[node name="OnlineCaption" type="Label" parent="Fields" unique_id=1779635210]
+offset_left = 2.0
+offset_top = 58.0
+offset_right = 56.0
+offset_bottom = 68.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "ONLINE"
+
+[node name="OnlineValue" type="Label" parent="Fields" unique_id=1779635211]
+offset_left = 2.0
+offset_top = 67.0
+offset_right = 56.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "online"
+clip_text = true
+
+[node name="Mark" type="ColorRect" parent="." unique_id=505163214]
+visible = false
+offset_left = -25.0
+offset_top = -10.0
+offset_right = 25.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(0.19607843, 0.61960787, 0.28235295, 0.85)

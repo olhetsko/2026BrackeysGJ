@@ -1,12 +1,17 @@
 [gd_scene format=3 uid="uid://elst0xn32iil"]
 
+[ext_resource type="PackedScene" uid="uid://b0okp4g3flip1" path="res://Scenes/book.tscn" id="1_fuqhk"]
 [ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_vrr3t"]
 [ext_resource type="PackedScene" uid="uid://bqsx3g3styht3" path="res://Scenes/people.tscn" id="2_iv3md"]
 [ext_resource type="PackedScene" uid="uid://ddqud5t5gl27x" path="res://Scenes/bell.tscn" id="3_iv3md"]
 [ext_resource type="PackedScene" uid="uid://d4hyr5jydqddr" path="res://Scenes/pullout.tscn" id="4_37esa"]
 [ext_resource type="Script" uid="uid://55mufsggjvxt" path="res://Scripts/bigblack.gd" id="4_jxerj"]
+[ext_resource type="PackedScene" uid="uid://dg4urxb4txxs2" path="res://Scenes/document.tscn" id="5_doc0h"]
+[ext_resource type="PackedScene" uid="uid://c5t4mp0bj7q2x" path="res://Scenes/stamp.tscn" id="6_stmp0"]
 
 [node name="Game" type="Node2D" unique_id=871825224]
+
+[node name="Book" parent="." unique_id=602144893 instance=ExtResource("1_fuqhk")]
 
 [node name="Table" type="Node2D" parent="." unique_id=2102355496]
 
@@ -33,6 +38,19 @@ zoom = Vector2(4, 4)
 
 [node name="Bell" parent="." unique_id=1045857545 instance=ExtResource("3_iv3md")]
 position = Vector2(-136, 19)
+
+[node name="Document" parent="." unique_id=418823905 instance=ExtResource("5_doc0h")]
+position = Vector2(-91, 50)
+scale = Vector2(0.25155962, 0.26113796)
+
+[node name="ApproveStamp" parent="." unique_id=884213780 instance=ExtResource("6_stmp0")]
+position = Vector2(95, 44)
+scale = Vector2(0.5, 0.5)
+
+[node name="DenyStamp" parent="." unique_id=884213781 instance=ExtResource("6_stmp0")]
+position = Vector2(128, 44)
+scale = Vector2(0.5, 0.5)
+ink = Color(0.7529412, 0.18039216, 0.18039216, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1534067726]
 visible = false
