@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bqsx3g3styht3"]
+
+[ext_resource type="Script" uid="uid://de23ghyw4w6j4" path="res://Scripts/People.gd" id="1_lijfn"]
+[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="2_vg6k0"]
+
+[node name="People" type="Node2D" unique_id=1226147756]
+script = ExtResource("1_lijfn")
+
+[node name="Head" type="Sprite2D" parent="." unique_id=756332777]
+position = Vector2(-0.9999771, -17.999992)
+scale = Vector2(0.07018926, 0.15306123)
+texture = ExtResource("2_vg6k0")
+
+[node name="Body" type="Sprite2D" parent="." unique_id=1051578039]
+position = Vector2(-0.5624962, 11.000004)
+scale = Vector2(0.17389591, 0.15306123)
+texture = ExtResource("2_vg6k0")
+
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1046717563]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-8, -19.5)
+scale = Vector2(0.012618298, 0.03571429)
+texture = ExtResource("2_vg6k0")
+
+[node name="Sprite2D4" type="Sprite2D" parent="." unique_id=1808391455]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(6, -19.5)
+scale = Vector2(0.012618298, 0.03571429)
+texture = ExtResource("2_vg6k0")

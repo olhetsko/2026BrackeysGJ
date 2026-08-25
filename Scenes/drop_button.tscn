@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://qarsclr404j4"]
+
+[ext_resource type="Script" uid="uid://cytrut36abwn4" path="res://drop_button.gd" id="1_l13r2"]
+[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="2_cgxq1"]
+
+[node name="DropButton" type="Node2D" unique_id=1045857545]
+script = ExtResource("1_l13r2")
+
+[node name="Button" type="Button" parent="." unique_id=663211193]
+offset_right = 33.0
+offset_bottom = 10.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1908008601]
+modulate = Color(0.27941972, 0.21105039, 2.4065375e-08, 1)
+position = Vector2(16.5, 5)
+scale = Vector2(0.10410097, 0.051020406)
+texture = ExtResource("2_cgxq1")
+
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]

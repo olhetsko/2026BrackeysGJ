@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://elst0xn32iil"]
+
+[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_vrr3t"]
+[ext_resource type="PackedScene" uid="uid://bqsx3g3styht3" path="res://Scenes/people.tscn" id="2_iv3md"]
+[ext_resource type="PackedScene" uid="uid://ddqud5t5gl27x" path="res://Scenes/bell.tscn" id="3_iv3md"]
+[ext_resource type="PackedScene" uid="uid://d4hyr5jydqddr" path="res://Scenes/pullout.tscn" id="4_37esa"]
+[ext_resource type="Script" uid="uid://55mufsggjvxt" path="res://Scripts/bigblack.gd" id="4_jxerj"]
+
+[node name="Game" type="Node2D" unique_id=871825224]
+
+[node name="Table" type="Node2D" parent="." unique_id=2102355496]
+
+[node name="Sprite2D" type="Sprite2D" parent="Table" unique_id=1623163447]
+modulate = Color(0.21960784, 0.16862746, 0.08235294, 1)
+position = Vector2(9.536743e-07, 46)
+scale = Vector2(1.0520505, 0.42857143)
+texture = ExtResource("1_vrr3t")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Table" unique_id=1117489539]
+modulate = Color(0.22696075, 0.2269296, 0.27986285, 1)
+position = Vector2(2.0000076, -37.5)
+scale = Vector2(1.0520505, 0.42346936)
+texture = ExtResource("1_vrr3t")
+
+[node name="People" parent="." unique_id=1226147756 instance=ExtResource("2_iv3md")]
+modulate = Color(0.34901962, 0.4627451, 0.5921569, 1)
+self_modulate = Color(0.21568628, 0.19607843, 0.8666667, 1)
+position = Vector2(-174, -22)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1008624333]
+position = Vector2(0, 4)
+zoom = Vector2(4, 4)
+
+[node name="Bell" parent="." unique_id=1045857545 instance=ExtResource("3_iv3md")]
+position = Vector2(-136, 19)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1534067726]
+visible = false
+modulate = Color(0, 0, 0, 0.5137255)
+texture = ExtResource("1_vrr3t")
+script = ExtResource("4_jxerj")
+
+[node name="Pullout" parent="." unique_id=443729691 instance=ExtResource("4_37esa")]
+position = Vector2(41, -140)

@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="New Game Project"
-run/main_scene="uid://btkm3pvmcnkd7"
+run/main_scene="uid://elst0xn32iil"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Global="*uid://d2iwnjbcm23ol"
+Global="*uid://c4euqaqklpp1o"
 
 [display]
 
