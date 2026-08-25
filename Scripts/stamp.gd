@@ -11,6 +11,10 @@ extends Node2D
 
 const HOVER_GROW := 1.25
 
+## Drop the block this close to its case and it clicks back into it, so putting
+## a stamp away does not need pixel-perfect aiming. Measured in local units.
+const SNAP_DISTANCE := 30.0
+
 ## Pad, block and the mark this stamp leaves all come from this one colour, so
 ## a stamp can never ink a different colour than it looks.
 @export var ink := Color(0.19607843, 0.61960787, 0.28235295):
@@ -26,9 +30,13 @@ const HOVER_GROW := 1.25
 
 var dragging := false
 var drag_offset := Vector2.ZERO
+## Where the block sits in its case, taken from the scene so moving the case in
+## the editor moves the resting place with it.
+var home := Vector2.ZERO
 
 
 func _ready() -> void:
+	home = block.position
 	apply_style()
 
 
@@ -88,6 +96,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		elif not event.pressed and dragging:
 			dragging = false
+			snap_home_if_near()
 			get_viewport().set_input_as_handled()
 
 	elif event is InputEventMouseMotion and dragging:
@@ -95,10 +104,17 @@ func _unhandled_input(event: InputEvent) -> void:
 		refresh_hover()
 
 	elif event is InputEventKey and event.keycode == KEY_SPACE:
-		# echo guards against a held key stamping every frame.
+		# echo guards against a held key stamping every frame. The event is
+		# deliberately left unhandled so the document still sees it and leaves.
 		if event.pressed and not event.echo and over_document():
 			stamp()
-			get_viewport().set_input_as_handled()
+
+
+# Let go near the case and the block drops back into it.
+func snap_home_if_near() -> void:
+	if block.position.distance_to(home) <= SNAP_DISTANCE:
+		block.position = home
+	refresh_hover()
 
 
 func stamp() -> void:

@@ -92,10 +92,15 @@ func on_customer_arrived() -> void:
 	slide_to(SHOWN_POS)
 
 func on_next_customer_requested() -> void:
+	leave()
+
+
+# Send the sheet away and hide it once it is off the counter, so nothing shows
+# while we wait. If a customer arrives mid-slide, slide_to kills this tween and
+# finished never fires, so roll_person's visible = true is not undone after.
+func leave() -> void:
+	dragging = false
 	slide_to(HIDDEN_POS)
-	# Gone once it is off the counter, so nothing shows while we wait. If a
-	# customer arrives mid-slide, slide_to kills this tween and finished never
-	# fires, so roll_person's visible = true is not undone afterwards.
 	tween.finished.connect(func() -> void: visible = false)
 
 
@@ -168,3 +173,11 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	elif event is InputEventMouseMotion and dragging:
 		global_position = event_world_pos(event) + drag_offset
+
+	elif event is InputEventKey and event.keycode == KEY_SPACE:
+		# Space always sends the sheet away, stamped or not, over it or not.
+		# The stamps sit later in the tree so they get this event first and any
+		# mark is already on the paper by the time it leaves.
+		if event.pressed and not event.echo:
+			leave()
+			get_viewport().set_input_as_handled()
