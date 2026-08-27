@@ -6,7 +6,6 @@ const COOLDOWN := 1.5
 
 var _cooldown_timer: Timer
 
-
 func _ready() -> void:
 	# A real one-shot Timer node instead of awaiting inside _process(), which
 	# used to start a fresh timer every frame the bell was on cooldown.

@@ -7,8 +7,8 @@
 script = ExtResource("2_doc0h")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1557638243]
-position = Vector2(-0.78125, 5.9604645e-08)
-scale = Vector2(0.45918772, 1)
+position = Vector2(0, 0)
+scale = Vector2(0.52, 1.38)
 texture = ExtResource("1_mj70b")
 
 [node name="ID Card" type="Label" parent="." unique_id=310442001]
@@ -164,7 +164,49 @@ theme_override_font_sizes/font_size = 12
 text = "online"
 clip_text = true
 
-[node name="Mark" type="ColorRect" parent="." unique_id=505163214]
+[node name="Stamps" type="Node2D" parent="." unique_id=1827460001]
+
+[node name="AcceptLabel" type="Label" parent="Stamps" unique_id=1827460010]
+offset_left = -28.0
+offset_top = 88.0
+offset_right = 22.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 7
+text = "accept"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AcceptSlot" type="ColorRect" parent="Stamps" unique_id=1827460011]
+offset_left = -28.0
+offset_top = 104.0
+offset_right = 22.0
+offset_bottom = 132.0
+mouse_filter = 2
+color = Color(0.92, 0.92, 0.86, 1)
+
+[node name="DeclineLabel" type="Label" parent="Stamps" unique_id=1827460012]
+offset_left = 22.0
+offset_top = 88.0
+offset_right = 72.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 7
+text = "decline"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeclineSlot" type="ColorRect" parent="Stamps" unique_id=1827460013]
+offset_left = 22.0
+offset_top = 104.0
+offset_right = 72.0
+offset_bottom = 132.0
+mouse_filter = 2
+color = Color(0.92, 0.92, 0.86, 1)
+
+[node name="Mark" type="ColorRect" parent="Stamps" unique_id=505163214]
 visible = false
 offset_left = -25.0
 offset_top = -10.0

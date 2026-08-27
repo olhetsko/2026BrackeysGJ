@@ -11,8 +11,10 @@ var arriving := false
 
 func _ready() -> void:
 	position = START_POS
+	# The document finds the customer through this group to decide whether a
+	# drop landed on them, so neither has to know the other's scene path.
+	add_to_group("customer")
 	Global.next_customer_requested.connect(_on_next_customer_requested)
-
 
 func _on_next_customer_requested() -> void:
 	if arriving == true:

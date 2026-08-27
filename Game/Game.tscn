@@ -4,8 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_vrr3t"]
 [ext_resource type="PackedScene" uid="uid://bqsx3g3styht3" path="res://Scenes/people.tscn" id="2_iv3md"]
 [ext_resource type="PackedScene" uid="uid://ddqud5t5gl27x" path="res://Scenes/bell.tscn" id="3_iv3md"]
-[ext_resource type="PackedScene" uid="uid://d4hyr5jydqddr" path="res://Scenes/pullout.tscn" id="4_37esa"]
-[ext_resource type="Script" uid="uid://55mufsggjvxt" path="res://Scripts/bigblack.gd" id="4_jxerj"]
 [ext_resource type="PackedScene" uid="uid://dg4urxb4txxs2" path="res://Scenes/document.tscn" id="5_doc0h"]
 [ext_resource type="PackedScene" uid="uid://c5t4mp0bj7q2x" path="res://Scenes/stamp.tscn" id="6_stmp0"]
 
@@ -49,16 +47,8 @@ scale = Vector2(0.5, 0.5)
 position = Vector2(128, 44)
 scale = Vector2(0.5, 0.5)
 ink = Color(0.7529412, 0.18039216, 0.18039216, 1)
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1534067726]
-visible = false
-modulate = Color(0, 0, 0, 0.5137255)
-texture = ExtResource("1_vrr3t")
-script = ExtResource("4_jxerj")
+accept = false
 
 [node name="Book" parent="." unique_id=602144893 instance=ExtResource("1_fuqhk")]
 position = Vector2(-35.000015, 36)
 scale = Vector2(0.2, 0.2)
-
-[node name="Pullout" parent="." unique_id=443729691 instance=ExtResource("4_37esa")]
-position = Vector2(41, -140)

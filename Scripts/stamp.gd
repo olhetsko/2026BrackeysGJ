@@ -22,6 +22,11 @@ const SNAP_DISTANCE := 30.0
 		ink = value
 		apply_style()
 
+## Which slot on the document this stamp fills when it lands. The green stamp
+## is the accept stamp and fills the left "accept" slot; the red one fills
+## the right "decline" slot. Set per instance in the scene.
+@export var accept := true
+
 @onready var case: ColorRect = $Case
 @onready var pad: ColorRect = $Pad
 @onready var block: Node2D = $Block
@@ -104,10 +109,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		refresh_hover()
 
 	elif event is InputEventKey and event.keycode == KEY_SPACE:
-		# echo guards against a held key stamping every frame. The event is
-		# deliberately left unhandled so the document still sees it and leaves.
+		# Space is ONLY a stamp trigger. It must never deliver the document,
+		# summon a new customer, advance the queue, or move the paper off the
+		# desk. The bell's Button is kept focus-free so Space can't fire it
+		# via ui_accept either; this handler then marks the event handled so
+		# no other listener can chain off it.
+		# echo guards against a held key stamping every frame.
 		if event.pressed and not event.echo and over_document():
 			stamp()
+		# Always consume Space from this point on, even if no stamp landed:
+		# pressing Space with the stamp somewhere else should do nothing at
+		# all, certainly not ring the bell or advance the customer.
+		get_viewport().set_input_as_handled()
 
 
 # Let go near the case and the block drops back into it.
@@ -121,4 +134,7 @@ func stamp() -> void:
 	var doc := document()
 	if doc == null:
 		return
-	doc.place_mark(block_rect().get_center(), ink)
+	# Hand the color and the slot routing to the document. The document owns
+	# where the stamp appears; the stamp only contributes its ink color and
+	# which side (accept / decline) it represents.
+	doc.apply_stamp(ink, accept)

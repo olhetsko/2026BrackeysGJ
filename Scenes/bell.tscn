@@ -9,6 +9,7 @@ script = ExtResource("1_umlr1")
 [node name="Button" type="Button" parent="." unique_id=663211193]
 offset_right = 24.0
 offset_bottom = 16.0
+focus_mode = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1908008601]
 modulate = Color(1, 0.78431374, 0, 1)
