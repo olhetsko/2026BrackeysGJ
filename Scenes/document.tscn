@@ -3,11 +3,15 @@
 [ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_mj70b"]
 [ext_resource type="Script" uid="uid://qho0ylaedjec" path="res://Scripts/document.gd" id="2_doc0h"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
+size = Vector2(164, 270)
+
 [node name="Document" type="Node2D" unique_id=771700449]
+position = Vector2(0, -10)
 script = ExtResource("2_doc0h")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1557638243]
-position = Vector2(0, 0)
+position = Vector2(0, 42)
 scale = Vector2(0.52, 1.38)
 texture = ExtResource("1_mj70b")
 
@@ -33,18 +37,18 @@ color = Color(0.12, 0.1, 0.09, 1)
 
 [node name="NameCaption" type="Label" parent="Fields" unique_id=126073195]
 offset_left = -56.0
-offset_top = -62.0
+offset_top = -70.0
 offset_right = 56.0
-offset_bottom = -52.0
+offset_bottom = -58.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
 theme_override_font_sizes/font_size = 8
 text = "NAME"
 
 [node name="NameValue" type="Label" parent="Fields" unique_id=126073196]
 offset_left = -56.0
-offset_top = -53.0
+offset_top = -63.0
 offset_right = 56.0
-offset_bottom = -37.0
+offset_bottom = -46.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 12
 text = "name"
@@ -52,165 +56,200 @@ clip_text = true
 
 [node name="AgeCaption" type="Label" parent="Fields" unique_id=704245098]
 offset_left = -56.0
-offset_top = -32.0
+offset_top = -48.0
 offset_right = -2.0
-offset_bottom = -22.0
+offset_bottom = -36.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
 theme_override_font_sizes/font_size = 8
 text = "AGE"
+metadata/_edit_use_anchors_ = true
 
 [node name="AgeValue" type="Label" parent="Fields" unique_id=704245099]
 offset_left = -56.0
-offset_top = -23.0
+offset_top = -39.0
 offset_right = -2.0
-offset_bottom = -7.0
+offset_bottom = -22.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 12
 text = "age"
 clip_text = true
+metadata/_edit_use_anchors_ = true
 
 [node name="RaceCaption" type="Label" parent="Fields" unique_id=1804344233]
 offset_left = 2.0
-offset_top = -32.0
+offset_top = -48.0
 offset_right = 56.0
-offset_bottom = -22.0
+offset_bottom = -36.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
 theme_override_font_sizes/font_size = 8
 text = "RACE"
+metadata/_edit_use_anchors_ = true
 
 [node name="RaceValue" type="Label" parent="Fields" unique_id=1804344234]
 offset_left = 2.0
-offset_top = -23.0
+offset_top = -39.0
 offset_right = 56.0
-offset_bottom = -7.0
+offset_bottom = -22.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 12
 text = "race"
 clip_text = true
+metadata/_edit_use_anchors_ = true
 
 [node name="WorkspaceCaption" type="Label" parent="Fields" unique_id=772204633]
 offset_left = -56.0
-offset_top = -2.0
+offset_top = -21.0
 offset_right = 56.0
-offset_bottom = 8.0
+offset_bottom = -9.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
 theme_override_font_sizes/font_size = 8
 text = "WORKSPACE"
+metadata/_edit_use_anchors_ = true
 
 [node name="WorkspaceValue" type="Label" parent="Fields" unique_id=772204634]
 offset_left = -56.0
-offset_top = 7.0
+offset_top = -12.0
 offset_right = 56.0
-offset_bottom = 23.0
+offset_bottom = 5.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 12
 text = "workspace"
 clip_text = true
+metadata/_edit_use_anchors_ = true
 
 [node name="SpecialtyCaption" type="Label" parent="Fields" unique_id=1271963481]
 offset_left = -56.0
-offset_top = 28.0
+offset_top = 9.0
 offset_right = 56.0
-offset_bottom = 38.0
+offset_bottom = 21.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
 theme_override_font_sizes/font_size = 8
 text = "SPECIALTY"
+metadata/_edit_use_anchors_ = true
 
 [node name="SpecialtyValue" type="Label" parent="Fields" unique_id=1271963482]
 offset_left = -56.0
-offset_top = 37.0
+offset_top = 18.0
 offset_right = 56.0
-offset_bottom = 53.0
+offset_bottom = 35.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 12
 text = "specialty"
 clip_text = true
+metadata/_edit_use_anchors_ = true
 
 [node name="SectorCaption" type="Label" parent="Fields" unique_id=1977371510]
 offset_left = -56.0
-offset_top = 58.0
+offset_top = 39.0
 offset_right = -2.0
-offset_bottom = 68.0
+offset_bottom = 51.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
 theme_override_font_sizes/font_size = 8
 text = "SECTOR"
+metadata/_edit_use_anchors_ = true
 
 [node name="SectorValue" type="Label" parent="Fields" unique_id=1977371511]
 offset_left = -56.0
-offset_top = 67.0
+offset_top = 48.0
 offset_right = -2.0
-offset_bottom = 83.0
+offset_bottom = 65.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 12
 text = "sector"
 clip_text = true
+metadata/_edit_use_anchors_ = true
 
-[node name="OnlineCaption" type="Label" parent="Fields" unique_id=1779635210]
-offset_left = 2.0
-offset_top = 58.0
-offset_right = 56.0
-offset_bottom = 68.0
+[node name="ClearanceCaption" type="Label" parent="Fields" unique_id=1568874670]
+offset_left = -56.0
+offset_top = 67.0
+offset_right = -2.0
+offset_bottom = 79.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
 theme_override_font_sizes/font_size = 8
-text = "ONLINE"
+text = "CLEARANCE"
+metadata/_edit_use_anchors_ = true
 
-[node name="OnlineValue" type="Label" parent="Fields" unique_id=1779635211]
-offset_left = 2.0
-offset_top = 67.0
-offset_right = 56.0
-offset_bottom = 83.0
+[node name="ClearanceValue" type="Label" parent="Fields" unique_id=1770656380]
+offset_left = -56.0
+offset_top = 76.0
+offset_right = -2.0
+offset_bottom = 93.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 12
-text = "online"
+text = "clearance"
 clip_text = true
+metadata/_edit_use_anchors_ = true
 
-[node name="Stamps" type="Node2D" parent="." unique_id=1827460001]
-
-[node name="AcceptLabel" type="Label" parent="Stamps" unique_id=1827460010]
-offset_left = -28.0
-offset_top = 88.0
-offset_right = 22.0
-offset_bottom = 100.0
-mouse_filter = 2
+[node name="PermitIssueCaption" type="Label" parent="Fields" unique_id=1414870682]
+offset_left = -55.0
+offset_top = 95.0
+offset_right = -1.0
+offset_bottom = 107.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
-theme_override_font_sizes/font_size = 7
-text = "accept"
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_font_sizes/font_size = 8
+text = "PERMIT DATE"
+metadata/_edit_use_anchors_ = true
 
-[node name="AcceptSlot" type="ColorRect" parent="Stamps" unique_id=1827460011]
-offset_left = -28.0
+[node name="PermitIssueValue" type="Label" parent="Fields" unique_id=273474027]
+offset_left = -55.0
 offset_top = 104.0
-offset_right = 22.0
-offset_bottom = 132.0
-mouse_filter = 2
-color = Color(0.92, 0.92, 0.86, 1)
+offset_right = -1.0
+offset_bottom = 121.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "date"
+clip_text = true
+metadata/_edit_use_anchors_ = true
 
-[node name="DeclineLabel" type="Label" parent="Stamps" unique_id=1827460012]
-offset_left = 22.0
-offset_top = 88.0
-offset_right = 72.0
-offset_bottom = 100.0
-mouse_filter = 2
+[node name="PermitExpieryCaption" type="Label" parent="Fields" unique_id=992620205]
+offset_left = 2.0
+offset_top = 95.0
+offset_right = 56.0
+offset_bottom = 107.0
 theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
-theme_override_font_sizes/font_size = 7
-text = "decline"
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_font_sizes/font_size = 8
+text = "EXPITY"
+metadata/_edit_use_anchors_ = true
 
-[node name="DeclineSlot" type="ColorRect" parent="Stamps" unique_id=1827460013]
-offset_left = 22.0
+[node name="PermitExpiryValue" type="Label" parent="Fields" unique_id=605110598]
+offset_left = 2.0
 offset_top = 104.0
-offset_right = 72.0
-offset_bottom = 132.0
-mouse_filter = 2
-color = Color(0.92, 0.92, 0.86, 1)
+offset_right = 56.0
+offset_bottom = 121.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "expiry"
+clip_text = true
+metadata/_edit_use_anchors_ = true
 
-[node name="Mark" type="ColorRect" parent="Stamps" unique_id=505163214]
-visible = false
-offset_left = -25.0
-offset_top = -10.0
-offset_right = 25.0
-offset_bottom = 10.0
+[node name="BodyTempCaption" type="Label" parent="Fields" unique_id=133102252]
+offset_left = -54.0
+offset_top = 123.0
+offset_bottom = 135.0
+theme_override_colors/font_color = Color(0.42, 0.38, 0.34, 1)
+theme_override_font_sizes/font_size = 8
+text = "TEMP"
+metadata/_edit_use_anchors_ = true
+
+[node name="BodyTempValue" type="Label" parent="Fields" unique_id=2004024308]
+offset_left = -54.0
+offset_top = 132.0
+offset_bottom = 149.0
+theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
+theme_override_font_sizes/font_size = 12
+text = "temp"
+clip_text = true
+metadata/_edit_use_anchors_ = true
+
+[node name="Mark" type="ColorRect" parent="." unique_id=505163214]
+offset_left = 59.0
+offset_top = 154.0
+offset_right = 80.0
+offset_bottom = 174.0
 mouse_filter = 2
-color = Color(0.19607843, 0.61960787, 0.28235295, 0.85)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1665503827]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=208693053]
+position = Vector2(1, 43)
+shape = SubResource("RectangleShape2D_4syrc")

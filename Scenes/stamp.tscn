@@ -1,41 +1,36 @@
 [gd_scene format=3 uid="uid://c5t4mp0bj7q2x"]
 
-[ext_resource type="Script" path="res://Scripts/stamp.gd" id="1_stmp0"]
+[ext_resource type="Script" uid="uid://d2s0hllr3n6q5" path="res://Scripts/greenstamp.gd" id="1_govvf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
+size = Vector2(40, 31)
 
 [node name="Stamp" type="Node2D" unique_id=884213770]
-script = ExtResource("1_stmp0")
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_govvf")
 
-[node name="Case" type="ColorRect" parent="." unique_id=884213771]
-offset_left = -24.0
-offset_top = -2.0
-offset_right = 24.0
-offset_bottom = 22.0
-mouse_filter = 2
-color = Color(0.049019609, 0.15490197, 0.070588239, 1)
-
-[node name="Pad" type="ColorRect" parent="." unique_id=884213772]
-offset_left = -20.0
-offset_top = 2.0
-offset_right = 20.0
-offset_bottom = 18.0
-mouse_filter = 2
-color = Color(0.10784314, 0.34078431, 0.15529412, 1)
-
-[node name="Block" type="Node2D" parent="." unique_id=884213773]
-position = Vector2(0, -14)
-
-[node name="Handle" type="ColorRect" parent="Block" unique_id=884213774]
+[node name="Handle" type="ColorRect" parent="." unique_id=279200291]
 offset_left = -9.0
-offset_top = -22.0
+offset_top = -20.0
 offset_right = 9.0
-offset_bottom = -11.0
+offset_bottom = -9.0
 mouse_filter = 2
-color = Color(0.13725491, 0.43372551, 0.19764706, 1)
+color = Color(0.13725491, 0.6627451, 0.11372549, 1)
 
-[node name="Body" type="ColorRect" parent="Block" unique_id=884213775]
+[node name="Body" type="ColorRect" parent="." unique_id=1894042745]
 offset_left = -18.0
-offset_top = -12.0
+offset_top = -10.0
 offset_right = 18.0
-offset_bottom = 12.0
+offset_bottom = 14.0
 mouse_filter = 2
-color = Color(0.19607843, 0.61960787, 0.28235295, 1)
+color = Color(0.07450981, 0.91764706, 0, 1)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=582896392]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=551189820]
+shape = SubResource("RectangleShape2D_4syrc")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

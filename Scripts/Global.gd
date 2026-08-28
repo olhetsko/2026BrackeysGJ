@@ -8,3 +8,11 @@ signal next_customer_requested
 # document scene answers this by rolling a new person and sliding open, so the
 # paper is driven by the arrival itself rather than by anyone poking a variable.
 signal customer_arrived
+
+var document_decision: String = ""
+var current_day: int = 1
+var daily_results: Array[Dictionary] = []
+
+func advance_day() -> void:
+	current_day += 1
+	daily_results.clear()

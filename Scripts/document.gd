@@ -1,23 +1,35 @@
 extends Node2D
 
-# The paper the customer hands over. Rolls a random person and writes each
-# field straight into its Label. Slides in when they reach the counter and
-# slides back out when the bell calls the next one.
-#
-# Save/Stamping: pressing the stamp (over the paper) calls apply_stamp(ink),
-# which sets is_stamped = true and shows the colored stamp in the slot at the
-# bottom of the paper. Stamping never removes the document.
-#
-# Delivery: dropping the document on the customer (People node) hands it over.
-# Stamped -> normal delivery. Unstamped -> still delivered, but is_stamped is
-# false so other code can branch on that.
+# -------------------------------------------------------------------------
+# DOCUMENT POSITIONS / ANIMATION
+# -------------------------------------------------------------------------
 
 const HIDDEN_POS := Vector2(-107.0, -22.0)
 const SHOWN_POS := Vector2(-30.0, 34.0)
 const SLIDE_TIME := 0.45
 
-const AGE_MIN := 20
-const AGE_MAX := 200
+# -------------------------------------------------------------------------
+# DAILY TRACKING DATA
+# -------------------------------------------------------------------------
+
+static var daily_documents: Array[Dictionary] = []
+static var current_day_id: int = 1
+
+# Call this method whenever a new day begins
+static func start_new_day() -> void:
+	daily_documents.clear()
+	current_day_id = 1
+	print("[DOCUMENT MANAGER] New day started. Array and ID reset to 1.")
+
+static func print_daily_summary() -> void:
+	print("================ DAILY LOG SUMMARY ================")
+	for entry in daily_documents:
+		print(entry)
+	print("==================================================")
+
+# -------------------------------------------------------------------------
+# BASIC DATA
+# -------------------------------------------------------------------------
 
 const FIRST_NAMES: Array[String] = [
 	"Adrian", "Bianca", "Cyrus", "Dahlia", "Emil",
@@ -33,7 +45,6 @@ const LAST_NAMES: Array[String] = [
 	"Pemberton", "Quintero", "Rasmussen", "Sandoval", "Thornbury",
 ]
 
-# TODO: drop your own races in here. Any number of entries works.
 const RACES: Array[String] = [
 	"Werewolf",
 	"Frankenstein",
@@ -46,7 +57,6 @@ const RACES: Array[String] = [
 	"Dragon",
 ]
 
-# Ten sectors, A through J.
 const SECTORS: Array[String] = [
 	"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
 ]
@@ -69,7 +79,100 @@ const WORKSPACES := {
 	"Operations": ["Coordination", "Scheduling", "Supervision", "Logistics", "Management"],
 }
 
+# -------------------------------------------------------------------------
+# VALIDATION DATASET
+# -------------------------------------------------------------------------
+
+const RACE_AGE_LIMITS := {
+	"Zombie": {"min": 1, "max": 10},
+	"Frankenstein": {"min": 1, "max": 50},
+	"Werewolf": {"min": 18, "max": 120},
+	"Witch": {"min": 18, "max": 300},
+	"Troll": {"min": 20, "max": 250},
+	"Sea Monster": {"min": 20, "max": 200},
+	"Mummy": {"min": 100, "max": 4000},
+	"Ghost": {"min": 50, "max": 10000},
+	"Dragon": {"min": 100, "max": 5000},
+}
+
+const RESTRICTED_SECTORS_PER_RACE := {
+	"Troll": ["A", "B", "C"],
+	"Dragon": ["A", "B", "C"],
+	"Ghost": ["E"],
+	"Sea Monster": ["E"],
+	"Zombie": ["J"],
+	"Werewolf": [],
+	"Frankenstein": [],
+	"Witch": [],
+	"Mummy": [],
+}
+
+const WORKPLACE_CLEARANCE_LEVELS := {
+	"Maintenance": 1,
+	"Agriculture": 1,
+	"Operations": 1,
+	"Production": 2,
+	"Transportation": 2,
+	"Communications": 2,
+	"Education": 2,
+	"Medical": 3,
+	"Science": 3,
+	"Engineering": 3,
+	"Administration": 3,
+	"Technology": 3,
+	"Security": 4,
+	"Research": 4,
+	"Emergency Services": 4,
+}
+
+const NAME_SECTOR_RULES := {
+	"A-G": ["A", "B", "C"],
+	"H-N": ["D", "E", "F"],
+	"O-Z": ["G", "H", "I", "J"],
+}
+
+const MAX_PERMIT_DURATION_YEARS := {
+	"Zombie": 2,
+	"Frankenstein": 2,
+	"Werewolf": 5,
+	"Witch": 5,
+	"Troll": 5,
+	"Sea Monster": 20,
+	"Mummy": 20,
+	"Ghost": 20,
+	"Dragon": 20,
+}
+
+const RESTRICTED_SPECIALTIES_PER_RACE := {
+	"Ghost": ["Firefighting"],
+	"Sea Monster": ["Firefighting"],
+	"Zombie": ["Translation", "Broadcasting", "Speech"],
+	"Troll": ["Robotics", "Programming", "Hardware"],
+	"Werewolf": [],
+	"Frankenstein": [],
+	"Witch": [],
+	"Mummy": [],
+	"Dragon": [],
+}
+
+const BODY_TEMP_RANGES_CELSIUS := {
+	"Ghost": {"min": -20.0, "max": 10.0},
+	"Zombie": {"min": 0.0, "max": 10.0},
+	"Mummy": {"min": 5.0, "max": 15.0},
+	"Werewolf": {"min": 36.0, "max": 39.0},
+	"Witch": {"min": 36.0, "max": 37.5},
+	"Frankenstein": {"min": 30.0, "max": 35.0},
+	"Troll": {"min": 35.0, "max": 38.0},
+	"Sea Monster": {"min": 10.0, "max": 22.0},
+	"Dragon": {"min": 80.0, "max": 200.0},
+}
+
+# -------------------------------------------------------------------------
+# UI REFERENCES
+# -------------------------------------------------------------------------
+
 @onready var sheet: Sprite2D = $Sprite2D
+
 @onready var name_label: Label = $"Fields/NameValue"
 @onready var age_label: Label = $"Fields/AgeValue"
 @onready var race_label: Label = $"Fields/RaceValue"
@@ -77,39 +180,60 @@ const WORKSPACES := {
 @onready var specialty_label: Label = $"Fields/SpecialtyValue"
 @onready var sector_label: Label = $"Fields/SectorValue"
 @onready var online_label: Label = $"Fields/OnlineValue"
-@onready var mark: ColorRect = $Mark
-@onready var accept_slot: ColorRect = $Stamps/AcceptSlot
-@onready var decline_slot: ColorRect = $Stamps/DeclineSlot
-@onready var accept_label: Label = $Stamps/AcceptLabel
-@onready var decline_label: Label = $Stamps/DeclineLabel
+
+@onready var clearance_label: Label = $"Fields/ClearanceValue"
+@onready var permit_issue_label: Label = $"Fields/PermitIssueValue"
+@onready var permit_expiry_label: Label = $"Fields/PermitExpiryValue"
+@onready var body_temp_label: Label = $"Fields/BodyTempValue"
+
+@onready var mark: CanvasItem = $Mark
+
+
+# -------------------------------------------------------------------------
+# STATE
+# -------------------------------------------------------------------------
 
 var tween: Tween
 var dragging := false
 var drag_offset := Vector2.ZERO
 
-# Stamped state. False from the moment a new person is rolled, true the moment
-# a stamp lands. The delivery path on mouse-up branches on this.
 var is_stamped := false
+var stamp_decision: String = "unprocessed"
+var document_id: int = 0
+var has_discrepancy: bool = false
 
-# Where the document was when the player grabbed it, so dropping it without
-# aiming at the customer just leaves it where they let go, not at the counter.
 var _drag_start_pos := Vector2.ZERO
 
+var document_name: String = ""
+var document_age: int = 0
+var document_race: String = ""
+var document_workspace: String = ""
+var document_specialty: String = ""
+var document_sector: String = ""
+var document_online: bool = false
+
+var security_clearance: int = 0
+var permit_issue_year: int = 0
+var permit_expiry_year: int = 0
+var body_temperature: float = 0.0
+
+# -------------------------------------------------------------------------
+# READY
+# -------------------------------------------------------------------------
 
 func _ready() -> void:
 	position = HIDDEN_POS
 	visible = false
-	mark.visible = false
-	# Both slots start uncolored. The matching stamp fills one of them; the
-	# other stays paper-coloured.
-	accept_slot.color = slot_unfilled_color()
-	decline_slot.color = slot_unfilled_color()
-	# The stamps find the document through this group, so neither has to know
-	# where the other sits in the scene.
+	_reset_stamp_visibilities()
+
 	add_to_group("document")
+
 	Global.customer_arrived.connect(on_customer_arrived)
 	Global.next_customer_requested.connect(on_next_customer_requested)
 
+# -------------------------------------------------------------------------
+# CUSTOMER / DOCUMENT FLOW
+# -------------------------------------------------------------------------
 
 func on_customer_arrived() -> void:
 	roll_person()
@@ -118,99 +242,354 @@ func on_customer_arrived() -> void:
 func on_next_customer_requested() -> void:
 	leave()
 
-
-# Send the sheet away and hide it once it is off the counter, so nothing shows
-# while we wait. If a customer arrives mid-slide, slide_to kills this tween and
-# finished never fires, so roll_person's visible = true is not undone after.
 func leave() -> void:
 	dragging = false
 	slide_to(HIDDEN_POS)
-	tween.finished.connect(func() -> void: visible = false)
 
+	tween.finished.connect(func() -> void:
+		visible = false
+	)
+
+# -------------------------------------------------------------------------
+# GENERATE DOCUMENT
+# -------------------------------------------------------------------------
 
 func roll_person() -> void:
 	visible = true
-	# A fresh person means a fresh, unstamped sheet.
 	is_stamped = false
-	mark.visible = false
-	# Reset both slots to the paper colour so a previous green/red stamp
-	# doesn't bleed into the next customer's paperwork.
-	accept_slot.color = slot_unfilled_color()
-	decline_slot.color = slot_unfilled_color()
-	name_label.text = "%s %s" % [FIRST_NAMES.pick_random(), LAST_NAMES.pick_random()]
-	age_label.text = str(randi_range(AGE_MIN, AGE_MAX))
-	race_label.text = RACES.pick_random()
+	stamp_decision = "unprocessed"
+	has_discrepancy = false
+	
+	document_id = current_day_id
+	current_day_id += 1
 
-	var workspace := str(WORKSPACES.keys().pick_random())
-	workspace_label.text = workspace
-	specialty_label.text = str(WORKSPACES[workspace].pick_random())
+	_reset_stamp_visibilities()
 
-	sector_label.text = SECTORS.pick_random()
-	online_label.text = "Y" if randi() % 2 == 0 else "N"
+	document_name = "%s %s" % [
+		FIRST_NAMES.pick_random(),
+		LAST_NAMES.pick_random()
+	]
 
+	document_race = RACES.pick_random()
+
+	var age_data: Dictionary = RACE_AGE_LIMITS[document_race]
+	document_age = randi_range(int(age_data["min"]), int(age_data["max"]))
+
+	document_workspace = str(WORKSPACES.keys().pick_random())
+	var valid_specialties: Array = WORKSPACES[document_workspace]
+	document_specialty = str(valid_specialties.pick_random())
+
+	document_sector = get_valid_sector_for_document()
+	document_online = randi() % 2 == 0
+
+	var required_clearance: int = WORKPLACE_CLEARANCE_LEVELS[document_workspace]
+	security_clearance = randi_range(required_clearance, 4)
+
+	permit_issue_year = randi_range(2020, 2026)
+	var max_duration: int = MAX_PERMIT_DURATION_YEARS[document_race]
+	var valid_duration := randi_range(0, max_duration)
+	permit_expiry_year = permit_issue_year + valid_duration
+
+	var temp_data: Dictionary = BODY_TEMP_RANGES_CELSIUS[document_race]
+	body_temperature = randf_range(float(temp_data["min"]), float(temp_data["max"]))
+
+	name_label.text = document_name
+	age_label.text = str(document_age)
+	race_label.text = document_race
+	workspace_label.text = document_workspace
+	specialty_label.text = document_specialty
+	sector_label.text = document_sector
+
+	clearance_label.text = str(security_clearance)
+	permit_issue_label.text = str(permit_issue_year)
+	permit_expiry_label.text = str(permit_expiry_year)
+	body_temp_label.text = "%.1f °C" % body_temperature
+
+	var failure_roll := randi_range(1, 5)
+	print("[DOCUMENT #%d] Failure roll = %d" % [document_id, failure_roll])
+
+	if failure_roll == 1:
+		has_discrepancy = true
+		make_one_field_wrong()
+
+func get_valid_sector_for_document() -> String:
+	var last_name := document_name.get_slice(" ", 1)
+	var initial := last_name.substr(0, 1).to_upper()
+
+	var allowed_by_name: Array = []
+
+	if initial >= "A" and initial <= "G":
+		allowed_by_name = NAME_SECTOR_RULES["A-G"]
+	elif initial >= "H" and initial <= "N":
+		allowed_by_name = NAME_SECTOR_RULES["H-N"]
+	elif initial >= "O" and initial <= "Z":
+		allowed_by_name = NAME_SECTOR_RULES["O-Z"]
+	else:
+		return "A"
+
+	var restricted: Array = RESTRICTED_SECTORS_PER_RACE[document_race]
+	var valid_sectors: Array = []
+
+	for sector in allowed_by_name:
+		if sector not in restricted:
+			valid_sectors.append(sector)
+
+	if valid_sectors.is_empty():
+		return str(allowed_by_name[0])
+
+	return str(valid_sectors.pick_random())
+
+func make_one_field_wrong() -> void:
+	var possible_failures := [
+		"AGE",
+		"SECTOR",
+		"CLEARANCE",
+		"NAME_SECTOR",
+		"PERMIT",
+		"SPECIALTY",
+		"TEMPERATURE"
+	]
+
+	var failure_type: String = possible_failures.pick_random()
+	print("[DOCUMENT #%d] Creating discrepancy: %s" % [document_id, failure_type])
+
+	match failure_type:
+		"AGE":
+			make_age_wrong()
+		"SECTOR":
+			make_sector_wrong()
+		"CLEARANCE":
+			make_clearance_wrong()
+		"NAME_SECTOR":
+			make_name_sector_wrong()
+		"PERMIT":
+			make_permit_wrong()
+		"SPECIALTY":
+			make_specialty_wrong()
+		"TEMPERATURE":
+			make_temperature_wrong()
+
+func make_age_wrong() -> void:
+	var limits: Dictionary = RACE_AGE_LIMITS[document_race]
+	var minimum: int = int(limits["min"])
+	var maximum: int = int(limits["max"])
+
+	if randi() % 2 == 0:
+		document_age = minimum - 1
+	else:
+		document_age = maximum + 1
+
+	age_label.text = str(document_age)
+
+func make_sector_wrong() -> void:
+	var last_name := document_name.get_slice(" ", 1)
+	var initial := last_name.substr(0, 1).to_upper()
+	var allowed_by_name: Array = []
+
+	if initial >= "A" and initial <= "G":
+		allowed_by_name = NAME_SECTOR_RULES["A-G"]
+	elif initial >= "H" and initial <= "N":
+		allowed_by_name = NAME_SECTOR_RULES["H-N"]
+	elif initial >= "O" and initial <= "Z":
+		allowed_by_name = NAME_SECTOR_RULES["O-Z"]
+
+	var restricted: Array = RESTRICTED_SECTORS_PER_RACE[document_race]
+	var wrong_sectors: Array = []
+
+	for sector in SECTORS:
+		if sector not in allowed_by_name and sector not in restricted:
+			wrong_sectors.append(sector)
+
+	if not wrong_sectors.is_empty():
+		document_sector = str(wrong_sectors.pick_random())
+	else:
+		var race_restricted: Array = restricted
+		if not race_restricted.is_empty():
+			document_sector = str(race_restricted.pick_random())
+
+	sector_label.text = document_sector
+
+func make_clearance_wrong() -> void:
+	var required: int = WORKPLACE_CLEARANCE_LEVELS[document_workspace]
+
+	if required > 1:
+		security_clearance = required - 1
+	else:
+		security_clearance = 0
+
+	clearance_label.text = str(security_clearance)
+
+func make_name_sector_wrong() -> void:
+	var current_last_name := document_name.get_slice(" ", 1)
+	var new_last_name := current_last_name
+
+	while new_last_name == current_last_name:
+		new_last_name = str(LAST_NAMES.pick_random())
+
+	var first_name := document_name.get_slice(" ", 0)
+	document_name = "%s %s" % [first_name, new_last_name]
+	name_label.text = document_name
+
+func make_permit_wrong() -> void:
+	var max_duration: int = MAX_PERMIT_DURATION_YEARS[document_race]
+	var wrong_duration := max_duration + randi_range(1, 5)
+
+	permit_expiry_year = permit_issue_year + wrong_duration
+	permit_expiry_label.text = str(permit_expiry_year)
+
+func make_specialty_wrong() -> void:
+	var other_workspaces: Array[String] = []
+
+	for workspace in WORKSPACES.keys():
+		if str(workspace) != document_workspace:
+			other_workspaces.append(str(workspace))
+
+	var wrong_workspace: String = other_workspaces.pick_random()
+	var specialties: Array = WORKSPACES[wrong_workspace]
+	document_specialty = str(specialties.pick_random())
+
+	while document_specialty in WORKSPACES[document_workspace]:
+		wrong_workspace = other_workspaces.pick_random()
+		specialties = WORKSPACES[wrong_workspace]
+		document_specialty = str(specialties.pick_random())
+
+	specialty_label.text = document_specialty
+
+func make_temperature_wrong() -> void:
+	var limits: Dictionary = BODY_TEMP_RANGES_CELSIUS[document_race]
+	var minimum: float = float(limits["min"])
+	var maximum: float = float(limits["max"])
+
+	if randi() % 2 == 0:
+		body_temperature = minimum - randf_range(1.0, 10.0)
+	else:
+		body_temperature = maximum + randf_range(1.0, 10.0)
+
+	body_temp_label.text = "%.1f °C" % body_temperature
+
+# -------------------------------------------------------------------------
+# VALIDATION
+# -------------------------------------------------------------------------
+
+func validate_document() -> Array[String]:
+	var discrepancies: Array[String] = []
+
+	if not check_age():
+		discrepancies.append("AGE")
+	if not check_sector_restriction():
+		discrepancies.append("SECTOR")
+	if not check_clearance():
+		discrepancies.append("CLEARANCE")
+	if not check_name_sector():
+		discrepancies.append("NAME / SECTOR")
+	if not check_permit_duration():
+		discrepancies.append("PERMIT DURATION")
+	if not check_specialty():
+		discrepancies.append("SPECIALTY")
+	if not check_workspace_specialty():
+		discrepancies.append("WORKSPACE / SPECIALTY")
+	if not check_body_temperature():
+		discrepancies.append("BODY TEMPERATURE")
+
+	return discrepancies
+
+func check_age() -> bool:
+	if not RACE_AGE_LIMITS.has(document_race):
+		return false
+	var limits: Dictionary = RACE_AGE_LIMITS[document_race]
+	return document_age >= int(limits["min"]) and document_age <= int(limits["max"])
+
+func check_sector_restriction() -> bool:
+	if not RESTRICTED_SECTORS_PER_RACE.has(document_race):
+		return false
+	var restricted: Array = RESTRICTED_SECTORS_PER_RACE[document_race]
+	return document_sector not in restricted
+
+func check_clearance() -> bool:
+	if not WORKPLACE_CLEARANCE_LEVELS.has(document_workspace):
+		return false
+	var required: int = int(WORKPLACE_CLEARANCE_LEVELS[document_workspace])
+	return security_clearance >= required
+
+func check_name_sector() -> bool:
+	var parts := document_name.split(" ")
+	if parts.size() < 2:
+		return false
+
+	var last_name: String = parts[parts.size() - 1]
+	var initial := last_name.substr(0, 1).to_upper()
+	var allowed_sectors: Array = []
+
+	if initial >= "A" and initial <= "G":
+		allowed_sectors = NAME_SECTOR_RULES["A-G"]
+	elif initial >= "H" and initial <= "N":
+		allowed_sectors = NAME_SECTOR_RULES["H-N"]
+	elif initial >= "O" and initial <= "Z":
+		allowed_sectors = NAME_SECTOR_RULES["O-Z"]
+	else:
+		return false
+
+	return document_sector in allowed_sectors
+
+func check_permit_duration() -> bool:
+	if not MAX_PERMIT_DURATION_YEARS.has(document_race):
+		return false
+	var max_duration: int = int(MAX_PERMIT_DURATION_YEARS[document_race])
+	var duration := permit_expiry_year - permit_issue_year
+	return duration >= 0 and duration <= max_duration
+
+func check_specialty() -> bool:
+	if not RESTRICTED_SPECIALTIES_PER_RACE.has(document_race):
+		return false
+	var restricted: Array = RESTRICTED_SPECIALTIES_PER_RACE[document_race]
+	return document_specialty not in restricted
+
+func check_workspace_specialty() -> bool:
+	if not WORKSPACES.has(document_workspace):
+		return false
+	return document_specialty in WORKSPACES[document_workspace]
+
+func check_body_temperature() -> bool:
+	if not BODY_TEMP_RANGES_CELSIUS.has(document_race):
+		return false
+	var limits: Dictionary = BODY_TEMP_RANGES_CELSIUS[document_race]
+	var minimum: float = float(limits["min"])
+	var maximum: float = float(limits["max"])
+	return body_temperature >= minimum and body_temperature <= maximum
+
+# -------------------------------------------------------------------------
+# ANIMATION & DRAGGING
+# -------------------------------------------------------------------------
 
 func slide_to(target: Vector2) -> void:
 	if tween and tween.is_valid():
 		tween.kill()
+
 	tween = create_tween()
 	tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "position", target, SLIDE_TIME)
 
-
-# Called by stamp.gd when the player presses the stamp over the paper. The
-# color and which slot to fill come from the stamp, so the document never
-# invents its own palette or routing. Stamping only mutates state and
-# visuals; it never removes the document.
-#
-# Contract: this function is the *only* thing Space does. It must NEVER call
-# leave(), hand_to_customer(), Global.next_customer_requested.emit(), or move
-# the document off the desk. is_stamped is just a piece of state; it is not
-# an instruction to deliver.
-func apply_stamp(color: Color, accept: bool) -> void:
-	if is_stamped:
-		return
-	is_stamped = true
-	# Fill the matching slot in the stamp's colour. The Mark ColorRect is
-	# reparented visually by resizing it to the slot and snapping its top-left
-	# to the slot's top-left, so it reads as "this stamp landed here".
-	var slot: ColorRect = accept_slot if accept else decline_slot
-	mark.color = Color(color.r, color.g, color.b, 0.85)
-	mark.size = slot.size
-	mark.position = slot.position
-	mark.visible = true
-
-
-# Paper-coloured backdrop for an unfilled stamp slot. Lives in one place so
-# the onready reset and the per-person reset can't drift apart.
-func slot_unfilled_color() -> Color:
-	return Color(0.92, 0.92, 0.86, 1)
-
-
-# --- dragging -------------------------------------------------------------
-
-# The paper's rect in global space. Uses global_scale so it stays correct
-# whatever scale the Document is instanced at.
 func sheet_rect() -> Rect2:
 	var size := sheet.texture.get_size() * sheet.scale * global_scale
-	return Rect2(to_global(sheet.position) - size * 0.5, size)
+	return Rect2(
+		to_global(sheet.position) - size * 0.5,
+		size
+	)
 
-
-# Where this mouse event landed, in world space. Taken from the event itself
-# rather than the live cursor, so it stays correct if events are queued.
 func event_world_pos(event: InputEventMouse) -> Vector2:
 	return get_viewport().get_canvas_transform().affine_inverse() * event.position
 
-
-# The People node's rect in world space. Found by group so the document
-# doesn't care where the customer sits in the scene.
 func customer_rect() -> Rect2:
 	var customer := get_tree().get_first_node_in_group("customer")
 	if customer == null or not (customer is Node2D):
 		return Rect2()
+
 	var n := customer as Node2D
 	var size := n.get("body_size") if "body_size" in n else Vector2(40, 60)
-	return Rect2(n.global_position - size * 0.5, size)
-
+	return Rect2(
+		n.global_position - size * 0.5,
+		size
+	)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
@@ -218,48 +597,89 @@ func _unhandled_input(event: InputEvent) -> void:
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		var at := event_world_pos(event)
+
 		if event.pressed and sheet_rect().has_point(at):
 			dragging = true
-			# Remember where the paper sat so a drop on the customer hands over
-			# the document, while a drop anywhere else leaves it where it lies.
 			_drag_start_pos = global_position
-			# Grab it where it was clicked so it does not jump to the cursor.
 			drag_offset = global_position - at
-			# Let go of any slide in progress, otherwise the tween keeps
-			# writing position and fights the mouse.
+
 			if tween and tween.is_valid():
 				tween.kill()
+
 			get_viewport().set_input_as_handled()
+
 		elif not event.pressed and dragging:
 			dragging = false
 			var drop_at := event_world_pos(event)
-			# Dropped on the customer: hand the document over. Stamped or not,
-			# the document leaves the desk; the is_stamped flag stays so the
-			# caller can branch on the result.
+
 			if customer_rect().has_point(drop_at):
 				hand_to_customer()
+
 			get_viewport().set_input_as_handled()
 
 	elif event is InputEventMouseMotion and dragging:
 		global_position = event_world_pos(event) + drag_offset
 
+# -------------------------------------------------------------------------
+# STAMPING & LOGGING DATA
+# -------------------------------------------------------------------------
 
-# Called when the player drops the document on the customer. The document
-# leaves the desk and the queue advances: People starts walking the next
-# customer in. Whatever consumes the delivery (e.g. People) can read
-# is_stamped to decide what to do with the paperwork.
+func _reset_stamp_visibilities() -> void:
+	mark.modulate.a = 0.0
+
+func apply_stamp(color: Color, accepted: bool) -> void:
+	if is_stamped:
+		return
+
+	is_stamped = true
+
+	# Restore color assignment
+	mark.modulate = color
+	mark.modulate.a = 1.0
+
+	if accepted:
+		stamp_decision = "approved"
+	else:
+		stamp_decision = "disapproved"
+
+	print(
+		"[DOCUMENT] Stamped. accepted=",
+		accepted,
+		" color=",
+		color
+	)
 func hand_to_customer() -> void:
-	# Delivery is instant: the document vanishes the moment the player lets
-	# go over the customer. No slide-back, no animation - just hide it in
-	# place. We kill any in-flight tween so it can't keep writing position
-	# while we're trying to vanish, then park it at the hidden slot so the
-	# next roll_person doesn't have to chase it.
 	dragging = false
+
+	# Save document entry into master tracking array
+	save_document_to_history()
+
 	if tween and tween.is_valid():
 		tween.kill()
+
 	position = HIDDEN_POS
 	visible = false
-	# Hand the queue over. The bell normally fires this when a new customer is
-	# requested, but delivery is the other path that consumes a slot, so it
-	# has to emit it too or the current customer just sits there forever.
+
 	Global.next_customer_requested.emit()
+
+func save_document_to_history() -> void:
+	var entry: Dictionary = {
+		"id": document_id,
+		"name": document_name,
+		"age": document_age,
+		"race": document_race,
+		"workspace": document_workspace,
+		"specialty": document_specialty,
+		"sector": document_sector,
+		"clearance": security_clearance,
+		"date_expiry": str(permit_expiry_year),
+		"temp": body_temperature,
+		"is_correct": not has_discrepancy,
+		"status": stamp_decision
+	}
+
+	daily_documents.append(entry)
+	
+	print("--- NEW ENTRY LOGGED ---")
+	print(entry)
+	print("------------------------")

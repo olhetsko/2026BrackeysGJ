@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://elst0xn32iil"]
 
-[ext_resource type="PackedScene" uid="uid://b0okp4g3flip1" path="res://Scenes/book.tscn" id="1_fuqhk"]
 [ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_vrr3t"]
 [ext_resource type="PackedScene" uid="uid://bqsx3g3styht3" path="res://Scenes/people.tscn" id="2_iv3md"]
 [ext_resource type="PackedScene" uid="uid://ddqud5t5gl27x" path="res://Scenes/bell.tscn" id="3_iv3md"]
 [ext_resource type="PackedScene" uid="uid://dg4urxb4txxs2" path="res://Scenes/document.tscn" id="5_doc0h"]
-[ext_resource type="PackedScene" uid="uid://c5t4mp0bj7q2x" path="res://Scenes/stamp.tscn" id="6_stmp0"]
+[ext_resource type="PackedScene" uid="uid://c5t4mp0bj7q2x" path="res://Scenes/stamp.tscn" id="6_oscxy"]
+[ext_resource type="PackedScene" uid="uid://dlc08ifi6qaor" path="res://Scenes/Rulebook.tscn" id="7_fuqhk"]
+[ext_resource type="PackedScene" uid="uid://c5hsdd1ihkcgc" path="res://Scenes/Redstamp.tscn" id="8_q6w4l"]
 
 [node name="Game" type="Node2D" unique_id=871825224]
 
@@ -36,19 +37,15 @@ zoom = Vector2(4, 4)
 position = Vector2(-136, 19)
 
 [node name="Document" parent="." unique_id=418823905 instance=ExtResource("5_doc0h")]
-position = Vector2(-91, 50)
+position = Vector2(-90, 28.000004)
 scale = Vector2(0.25155962, 0.26113796)
 
-[node name="ApproveStamp" parent="." unique_id=884213780 instance=ExtResource("6_stmp0")]
-position = Vector2(95, 44)
-scale = Vector2(0.5, 0.5)
+[node name="Stamp" parent="." unique_id=884213770 instance=ExtResource("6_oscxy")]
+position = Vector2(98, 15)
 
-[node name="DenyStamp" parent="." unique_id=884213781 instance=ExtResource("6_stmp0")]
-position = Vector2(128, 44)
-scale = Vector2(0.5, 0.5)
-ink = Color(0.7529412, 0.18039216, 0.18039216, 1)
-accept = false
+[node name="RedStamp" parent="." unique_id=444249098 instance=ExtResource("8_q6w4l")]
+position = Vector2(128, 15)
 
-[node name="Book" parent="." unique_id=602144893 instance=ExtResource("1_fuqhk")]
-position = Vector2(-35.000015, 36)
-scale = Vector2(0.2, 0.2)
+[node name="RuleBook" parent="." unique_id=688393794 instance=ExtResource("7_fuqhk")]
+position = Vector2(115, 60.999996)
+scale = Vector2(0.56739783, 0.6116763)

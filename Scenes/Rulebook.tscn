@@ -1,0 +1,212 @@
+[gd_scene format=3 uid="uid://dlc08ifi6qaor"]
+
+[ext_resource type="Script" uid="uid://dpy36kybealfs" path="res://Scripts/rule_book.gd" id="1_e5o5y"]
+[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="2_6g86t"]
+[ext_resource type="FontFile" uid="uid://si3fj572hj3y" path="res://Assets/fonts/PixelOperator8.ttf" id="3_h14ux"]
+[ext_resource type="FontFile" uid="uid://dap74o686yqd8" path="res://Assets/fonts/PixelOperator8-Bold.ttf" id="4_n65vo"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
+size = Vector2(90, 103)
+
+[node name="RuleBook" type="Node2D" unique_id=198245195]
+position = Vector2(17, 16)
+scale = Vector2(2.6449134, 2.6449134)
+script = ExtResource("1_e5o5y")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=995457111]
+offset_left = -45.0
+offset_top = -58.0
+offset_right = 45.0
+offset_bottom = 59.0
+mouse_filter = 2
+color = Color(0.59922385, 0.19147861, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect" unique_id=525689047]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 9.0
+offset_bottom = 11.0
+mouse_filter = 2
+color = Color(0.9607843, 0.9411765, 0.85882354, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/ColorRect" unique_id=1101609420]
+layout_mode = 0
+offset_left = 13.0
+offset_right = 19.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.9607843, 0.9411765, 0.85882354, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect2" type="ColorRect" parent="ColorRect/ColorRect" unique_id=2074078206]
+layout_mode = 0
+offset_left = 26.0
+offset_right = 32.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.9607843, 0.9411765, 0.85882354, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/ColorRect/ColorRect2" unique_id=2007485824]
+layout_mode = 0
+offset_left = 13.0
+offset_right = 19.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.9607843, 0.9411765, 0.85882354, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/ColorRect/ColorRect2/ColorRect" unique_id=1380773594]
+layout_mode = 0
+offset_left = 13.0
+offset_right = 19.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.9607843, 0.9411765, 0.85882354, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/ColorRect/ColorRect2/ColorRect/ColorRect" unique_id=727463206]
+layout_mode = 0
+offset_left = 13.0
+offset_right = 19.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.9607843, 0.9411765, 0.85882354, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="ColorRect/ColorRect/ColorRect2/ColorRect/ColorRect/ColorRect" unique_id=581870946]
+layout_mode = 0
+offset_left = 13.0
+offset_right = 19.0
+offset_bottom = 6.0
+mouse_filter = 2
+color = Color(0.9607843, 0.9411765, 0.85882354, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="Paper" type="Sprite2D" parent="." unique_id=406333348]
+modulate = Color(0.96, 0.94, 0.86, 1)
+position = Vector2(-7.6293945e-06, 8.000001)
+scale = Vector2(0.26498422, 0.5)
+texture = ExtResource("2_6g86t")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=596629549]
+z_index = 2
+z_as_relative = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=353563892]
+position = Vector2(0, -5.5)
+shape = SubResource("RectangleShape2D_4syrc")
+
+[node name="HeaderLabel" type="RichTextLabel" parent="." unique_id=1342435334]
+offset_left = -41.967346
+offset_top = -40.455013
+offset_right = 531.0484
+offset_bottom = 57.83733
+scale = Vector2(0.14581904, 0.12943214)
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("4_n65vo")
+theme_override_fonts/bold_font = ExtResource("4_n65vo")
+theme_override_fonts/mono_font = ExtResource("4_n65vo")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 8
+theme_override_font_sizes/mono_font_size = 8
+bbcode_enabled = true
+text = "RULEBOOK"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="PageLabel" type="RichTextLabel" parent="." unique_id=1996741524]
+texture_filter = 1
+offset_left = -37.0
+offset_top = -30.0
+offset_right = 454.65466
+offset_bottom = 473.1493
+scale = Vector2(0.14754242, 0.14754242)
+mouse_filter = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("3_h14ux")
+theme_override_fonts/bold_font = ExtResource("3_h14ux")
+theme_override_fonts/mono_font = ExtResource("3_h14ux")
+theme_override_font_sizes/normal_font_size = 32
+theme_override_font_sizes/bold_font_size = 8
+theme_override_font_sizes/mono_font_size = 8
+bbcode_enabled = true
+text = "TEST"
+fit_content = true
+scroll_active = false
+
+[node name="PageIndicator" type="RichTextLabel" parent="." unique_id=787594330]
+offset_left = -27.222065
+offset_top = 49.529034
+offset_right = 210.10365
+offset_bottom = 81.52904
+scale = Vector2(0.1768344, 0.1768344)
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.35, 0.3, 0.25, 1)
+theme_override_fonts/normal_font = ExtResource("3_h14ux")
+theme_override_fonts/bold_font = ExtResource("3_h14ux")
+theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/bold_font_size = 8
+bbcode_enabled = true
+text = "1 / 1"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+
+[node name="prev_button" type="Button" parent="." unique_id=395101740]
+offset_left = -42.0
+offset_top = 47.0
+offset_right = -32.0
+offset_bottom = 57.0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_h14ux")
+theme_override_font_sizes/font_size = 8
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="prev_button" unique_id=678999944]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.021117818
+anchor_top = -0.036138844
+anchor_right = 0.9788822
+anchor_bottom = 0.8638611
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 11.0
+offset_bottom = 24.0
+scale = Vector2(0.4140762, 0.31144896)
+theme_override_fonts/font = ExtResource("3_h14ux")
+theme_override_font_sizes/font_size = 32
+text = "<"
+metadata/_edit_use_anchors_ = true
+
+[node name="next_button" type="Button" parent="." unique_id=749556022]
+offset_left = 32.0
+offset_top = 47.0
+offset_right = 42.0
+offset_bottom = 57.0
+mouse_default_cursor_shape = 2
+theme_override_fonts/font = ExtResource("3_h14ux")
+theme_override_font_sizes/font_size = 8
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="next_button" unique_id=909028384]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = 12.0
+offset_bottom = 24.0
+scale = Vector2(0.37642208, 0.2879764)
+theme_override_fonts/font = ExtResource("3_h14ux")
+theme_override_font_sizes/font_size = 32
+text = ">"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="pressed" from="prev_button" to="." method="_on_prev_button_pressed"]
+[connection signal="pressed" from="next_button" to="." method="_on_next_button_pressed"]

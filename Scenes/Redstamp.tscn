@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://c5hsdd1ihkcgc"]
+
+[ext_resource type="Script" uid="uid://cv7ktb7td7wtd" path="res://Scripts/redstamp.gd" id="1_csry7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tdu44"]
+size = Vector2(40, 31)
+
+[node name="RedStamp" type="Node2D" unique_id=444249098]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_csry7")
+
+[node name="Handle" type="ColorRect" parent="." unique_id=740864739]
+offset_left = -9.0
+offset_top = -21.0
+offset_right = 9.0
+offset_bottom = -10.0
+mouse_filter = 2
+color = Color(0.66277665, 0.13656664, 0.11297121, 1)
+
+[node name="Body" type="ColorRect" parent="." unique_id=388773147]
+offset_left = -18.0
+offset_top = -11.0
+offset_right = 18.0
+offset_bottom = 13.0
+mouse_filter = 2
+color = Color(0.91764706, 0.07450981, 0, 1)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=2033902443]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=413410735]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_tdu44")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
