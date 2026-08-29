@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://elst0xn32iil"]
 
 [ext_resource type="Script" uid="uid://cyfqm44t70ij7" path="res://Game/game.gd" id="1_oscxy"]
-[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_vrr3t"]
 [ext_resource type="PackedScene" uid="uid://bqsx3g3styht3" path="res://Scenes/people.tscn" id="2_iv3md"]
 [ext_resource type="PackedScene" uid="uid://ddqud5t5gl27x" path="res://Scenes/bell.tscn" id="3_iv3md"]
 [ext_resource type="PackedScene" uid="uid://dg4urxb4txxs2" path="res://Scenes/document.tscn" id="5_doc0h"]
@@ -10,54 +9,68 @@
 [ext_resource type="PackedScene" uid="uid://c5hsdd1ihkcgc" path="res://Scenes/Redstamp.tscn" id="8_q6w4l"]
 [ext_resource type="PackedScene" uid="uid://bpqeldrpoiivv" path="res://Scenes/next.tscn" id="9_eqev2"]
 [ext_resource type="PackedScene" path="res://Scenes/tutorial.tscn" id="10_tut00"]
+[ext_resource type="Texture2D" uid="uid://dlbbdq8v657fx" path="res://Assets/pixil-frame-0 (1).png" id="11_bg000"]
+
+[sub_resource type="Gradient" id="Gradient_ghost"]
+offsets = PackedFloat32Array(0, 0.82831323)
+colors = PackedColorArray(0, 0, 0, 0, 0, 0, 0, 0.75)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_q6w4l"]
+gradient = SubResource("Gradient_ghost")
+width = 8
+fill_to = Vector2(0, 1)
 
 [node name="Game" type="Node2D" unique_id=871825224]
 script = ExtResource("1_oscxy")
 
-[node name="Table" type="Node2D" parent="." unique_id=2102355496]
-
-[node name="Sprite2D" type="Sprite2D" parent="Table" unique_id=1623163447]
-modulate = Color(0.21960784, 0.16862746, 0.08235294, 1)
-position = Vector2(9.536743e-07, 46)
-scale = Vector2(1.0520505, 0.42857143)
-texture = ExtResource("1_vrr3t")
-
-[node name="Sprite2D2" type="Sprite2D" parent="Table" unique_id=1117489539]
-modulate = Color(0.22696075, 0.2269296, 0.27986285, 1)
-position = Vector2(2.0000076, -37.5)
-scale = Vector2(1.0520505, 0.42346936)
-texture = ExtResource("1_vrr3t")
+[node name="Background" type="Sprite2D" parent="." unique_id=2102355496]
+texture_filter = 1
+position = Vector2(3.0000002, 11.000001)
+scale = Vector2(1.3806086, 1.044868)
+texture = ExtResource("11_bg000")
 
 [node name="People" parent="." unique_id=1226147756 instance=ExtResource("2_iv3md")]
-modulate = Color(0.34901962, 0.4627451, 0.5921569, 1)
-self_modulate = Color(0.21568628, 0.19607843, 0.8666667, 1)
-position = Vector2(-174, -22)
-
+position = Vector2(-1, -27)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1008624333]
 position = Vector2(0, 4)
-zoom = Vector2(4, 4)
-
-[node name="Bell" parent="." unique_id=1045857545 instance=ExtResource("3_iv3md")]
-position = Vector2(-136, 19)
-
-[node name="Document" parent="." unique_id=418823905 instance=ExtResource("5_doc0h")]
-position = Vector2(-90, 28.000004)
-scale = Vector2(0.25155962, 0.26113796)
-
-[node name="Stamp" parent="." unique_id=884213770 instance=ExtResource("6_oscxy")]
-position = Vector2(98, 15)
-
-[node name="RedStamp" parent="." unique_id=444249098 instance=ExtResource("8_q6w4l")]
-position = Vector2(128, 15)
-
-[node name="RuleBook" parent="." unique_id=688393794 instance=ExtResource("7_fuqhk")]
-position = Vector2(115, 60.999996)
-scale = Vector2(0.56739783, 0.6116763)
-
-[node name="Next" parent="." unique_id=1776632041 instance=ExtResource("9_eqev2")]
-position = Vector2(-141, 21)
-rotation = -0.2617994
-scale = Vector2(0.10038719, 0.10038719)
+zoom = Vector2(3.5, 3.5)
 
 [node name="Tutorial" parent="." unique_id=911420033 instance=ExtResource("10_tut00")]
+
+[node name="GhostFade" type="Sprite2D" parent="." unique_id=1760798891]
+modulate = Color(0.011764706, 0.011764706, 0.011764706, 1)
+self_modulate = Color(0.3952848, 0.3952848, 0.3952848, 1)
+texture_filter = 1
+position = Vector2(-1.4210855e-14, -15.000001)
+scale = Vector2(21.34941, 0.43378782)
+texture = SubResource("GradientTexture2D_q6w4l")
+
+[node name="Bell" parent="." unique_id=1045857545 instance=ExtResource("3_iv3md")]
+position = Vector2(-141, 13)
+scale = Vector2(2.3748538, 2.3748538)
+rest_texture = null
+pressed_texture = null
+
+[node name="Next" parent="." unique_id=1776632041 instance=ExtResource("9_eqev2")]
+position = Vector2(-130.99997, 33.999996)
+rotation = -0.26179937
+scale = Vector2(0.120049894, 0.12004989)
+
+[node name="Document" parent="." unique_id=418823905 instance=ExtResource("5_doc0h")]
+position = Vector2(0, 48)
+scale = Vector2(0.25155962, 0.26113796)
+
+[node name="RuleBook" parent="." unique_id=688393794 instance=ExtResource("7_fuqhk")]
+position = Vector2(131, 83)
+scale = Vector2(0.56739783, 0.6116763)
+
+[node name="Stamp" parent="." unique_id=884213770 instance=ExtResource("6_oscxy")]
+texture_filter = 1
+position = Vector2(116, 71.00001)
+scale = Vector2(1.5145297, 1.5145297)
+
+[node name="RedStamp" parent="." unique_id=444249098 instance=ExtResource("8_q6w4l")]
+texture_filter = 1
+position = Vector2(116.00001, 24)
+scale = Vector2(1.5018916, 1.5018916)

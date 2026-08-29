@@ -1,26 +1,28 @@
 [gd_scene format=3 uid="uid://ddqud5t5gl27x"]
 
 [ext_resource type="Script" uid="uid://nclkfcigj832" path="res://Scripts/bell.gd" id="1_umlr1"]
-[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="2_xo7uo"]
+[ext_resource type="Texture2D" uid="uid://bn67d3jtycbaf" path="res://Assets/pixil-frame-0 (4).png" id="2_rest0"]
+[ext_resource type="Texture2D" uid="uid://103gjqc4uicu" path="res://Assets/pixil-frame-0 (9).png" id="3_pres0"]
 
 [node name="Bell" type="Node2D" unique_id=1045857545]
 script = ExtResource("1_umlr1")
-
-[node name="Button" type="Button" parent="." unique_id=663211193]
-offset_right = 24.0
-offset_bottom = 16.0
-focus_mode = 0
+rest_texture = ExtResource("2_rest0")
+pressed_texture = ExtResource("3_pres0")
+pressed_sprite_scale = Vector2(0.0913, 0.0913)
+pressed_sprite_offset = Vector2(0.59, -1.36)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1908008601]
-modulate = Color(1, 0.78431374, 0, 1)
-position = Vector2(11.999997, 8)
-scale = Vector2(0.07570978, 0.08163265)
-texture = ExtResource("2_xo7uo")
+texture_filter = 1
+position = Vector2(12, 8)
+scale = Vector2(0.062, 0.062)
+texture = ExtResource("2_rest0")
 
-[node name="Label" type="Label" parent="." unique_id=1454447935]
-offset_right = 24.0
-offset_bottom = 20.0
-theme_override_font_sizes/font_size = 10
-text = "Next"
+[node name="Button" type="Button" parent="." unique_id=663211193]
+offset_left = -1.0
+offset_top = -3.0
+offset_right = 25.0
+offset_bottom = 19.0
+focus_mode = 0
+flat = true
 
 [connection signal="button_down" from="Button" to="." method="_on_button_button_down"]

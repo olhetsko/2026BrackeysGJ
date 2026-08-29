@@ -23,6 +23,7 @@ const FIELD_COLUMN := 96.0
 const RULE_COLUMN := 181.0
 
 @onready var day_label: Label = $Label
+@onready var score_label: Label = $Score
 @onready var results_table: GridContainer = $GridContainer
 @onready var continue_button: Button = $Button
 
@@ -37,11 +38,14 @@ const RULE_COLUMN := 181.0
 var mistakes: Array[Dictionary] = []
 var current_page: int = 0
 
+## What today earned. Held rather than committed, so re-reading this screen
+## cannot add it to the running total twice - that happens on Next Day.
+var day_score: int = 0
+
 
 func _ready() -> void:
 	day_label.text = "DAY " + str(Global.current_day)
-	# The drone keeps running underneath; this just marks the day closing.
-	Audio.play("endday")
+	show_score()
 
 	if not continue_button.pressed.is_connected(_on_continue_pressed):
 		continue_button.pressed.connect(_on_continue_pressed)
@@ -181,7 +185,21 @@ func add_cell(grid: GridContainer, text: String, is_header: bool) -> void:
 	grid.add_child(label)
 
 
+# --- score -----------------------------------------------------------------
+
+# Approving is the heavier call in both directions: +4 when the sheet really
+# was clean, -4 when it was not. Refusing is the safer one: +2 and -2. The
+# table itself lives in document.gd with the rest of the rules.
+func show_score() -> void:
+	day_score = DocumentScript.score_for_day(Global.daily_documents)
+	score_label.text = "SCORE  %+d\nTOTAL  %d" % [
+		day_score, Global.total_score + day_score,
+	]
+
+
 func _on_continue_pressed() -> void:
-	Audio.play("click")
+	Audio.play("nextday")
+	# Committed here, not in _ready, so the day can only ever be banked once.
+	Global.total_score += day_score
 	Global.advance_day()
 	get_tree().change_scene_to_file("res://Game/Game.tscn")

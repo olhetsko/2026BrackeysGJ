@@ -121,6 +121,19 @@ theme_override_fonts/font = ExtResource("2_jmi45")
 theme_override_font_sizes/font_size = 71
 text = "day"
 
+[node name="Score" type="Label" parent="." unique_id=172036988]
+texture_filter = 1
+layout_mode = 0
+offset_left = 12.0
+offset_top = -12.0
+offset_right = 272.0
+offset_bottom = 118.0
+scale = Vector2(0.06826494, 0.08699354)
+theme_override_colors/font_color = Color(0.85, 0.78, 0.55, 1)
+theme_override_fonts/font = ExtResource("2_jmi45")
+theme_override_font_sizes/font_size = 44
+text = "SCORE"
+
 [node name="Button" type="Button" parent="." unique_id=1618045940]
 texture_filter = 1
 layout_mode = 0

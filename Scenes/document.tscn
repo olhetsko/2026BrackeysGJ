@@ -1,34 +1,35 @@
 [gd_scene format=3 uid="uid://dg4urxb4txxs2"]
 
-[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_mj70b"]
+[ext_resource type="Texture2D" uid="uid://bi4rqxjiwpegb" path="res://Assets/paper/paper_card.png" id="1_mj70b"]
 [ext_resource type="Script" uid="uid://qho0ylaedjec" path="res://Scripts/document.gd" id="2_doc0h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
-size = Vector2(164, 270)
+size = Vector2(186, 270)
 
 [node name="Document" type="Node2D" unique_id=771700449]
-position = Vector2(0, -10)
+position = Vector2(-12, -9)
 script = ExtResource("2_doc0h")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1557638243]
-position = Vector2(0, 42)
-scale = Vector2(0.52, 1.38)
+texture_filter = 1
+position = Vector2(12, 42)
+scale = Vector2(2.292683, 2)
 texture = ExtResource("1_mj70b")
 
 [node name="ID Card" type="Label" parent="." unique_id=310442001]
-offset_left = -56.0
+offset_left = -43.0
 offset_top = -90.0
-offset_right = 56.0
-offset_bottom = -74.0
+offset_right = 69.0
+offset_bottom = -72.0
 theme_override_colors/font_color = Color(0.12, 0.1, 0.09, 1)
 theme_override_font_sizes/font_size = 13
 text = "ID CARD"
 horizontal_alignment = 1
 
 [node name="Rule" type="ColorRect" parent="." unique_id=1224408881]
-offset_left = -56.0
+offset_left = -43.0
 offset_top = -72.0
-offset_right = 56.0
+offset_right = 69.0
 offset_bottom = -70.5
 mouse_filter = 2
 color = Color(0.12, 0.1, 0.09, 1)
@@ -251,5 +252,5 @@ mouse_filter = 2
 [node name="Area2D" type="Area2D" parent="." unique_id=1665503827]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=208693053]
-position = Vector2(1, 43)
+position = Vector2(12, 43)
 shape = SubResource("RectangleShape2D_4syrc")

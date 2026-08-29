@@ -17,6 +17,11 @@ signal rulebook_page_turned
 
 var current_day: int = 1
 
+## Points carried across days. The day's own score is worked out on the summary
+## screen from daily_documents and folded in when you press Next Day, so it is
+## only ever committed once.
+var total_score: int = 0
+
 ## The species of the applicant currently at the counter. People picks it when
 ## they are summoned - before the walk, so the sprite that arrives and the card
 ## that follows are the same creature - and the document reads it from here.

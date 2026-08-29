@@ -105,6 +105,7 @@ extends Node2D
 		"body":
 			"Potato      1 - 3\n" +
 			"Zombie      1 - 10\n" +
+			"Eyeball     5 - 60\n" +
 			"Goblin     15 - 200\n" +
 			"Clown      18 - 90\n" +
 			"Fra-stein   1 - 50\n" +
@@ -121,7 +122,8 @@ extends Node2D
 			"Zombie, Frankenstein,\n" +
 			"Potato\n" +
 			"  -> 2 yrs\n\n" +
-			"Clown, Goblin\n" +
+			"Clown, Goblin,\n" +
+			"Eyeball\n" +
 			"  -> 5 yrs\n\n" +
 			"Mummy, Ghost,\n" +
 			"Dragon, Vampire\n" +
@@ -136,7 +138,8 @@ extends Node2D
 			"Ghost    : E\n" +
 			"Clown    : E\n" +
 			"Zombie   : J\n" +
-			"Goblin   : J\n\n" +
+			"Goblin   : J\n" +
+			"Eyeball  : H\n\n" +
 			"Others: no limit"
 	},
 	{
@@ -183,6 +186,7 @@ extends Node2D
 			"Potato     4 -> 12\n" +
 			"Mummy      5 -> 15\n" +
 			"Vampire    8 -> 18\n" +
+			"Eyeball   20 -> 30\n" +
 			"Fra-stein 30 -> 35\n" +
 			"Goblin    33 -> 37\n" +
 			"Clown     36 -> 38\n" +
@@ -203,7 +207,9 @@ extends Node2D
 			"Vampire no:\n" +
 			"  Farming, Piloting\n\n" +
 			"Goblin no:\n" +
-			"  Finance, Records"
+			"  Finance, Records\n\n" +
+			"Eyeball no:\n" +
+			"  Piloting, Assembly"
 	}
 ]
 
@@ -356,6 +362,9 @@ func _on_prev_button_pressed() -> void:
 	if current_page > 0:
 		current_page -= 1
 		update_page_display()
+		# One of four takes, picked at random, so paging through the book does
+		# not click identically every time.
+		Audio.play("flip")
 		Global.rulebook_page_turned.emit()
 
 
@@ -363,4 +372,5 @@ func _on_next_button_pressed() -> void:
 	if current_page < visible_pages.size() - 1:
 		current_page += 1
 		update_page_display()
+		Audio.play("flip")
 		Global.rulebook_page_turned.emit()

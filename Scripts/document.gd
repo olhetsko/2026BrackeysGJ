@@ -4,8 +4,9 @@ extends Node2D
 # DOCUMENT POSITIONS / ANIMATION
 # -------------------------------------------------------------------------
 
-# Hidden sits where the applicant stands, so the sheet slides out of them
-# rather than in from offscreen. Shown is the middle of the counter.
+# Fallbacks only. The resting place is taken from wherever the Document node is
+# placed in the editor, and the hidden place is wherever the applicant is, so
+# the sheet slides out of them wherever the window happens to be.
 const HIDDEN_POS := Vector2(0.0, -22.0)
 const SHOWN_POS := Vector2(0.0, 34.0)
 const SLIDE_TIME := 0.45
@@ -13,6 +14,38 @@ const SLIDE_TIME := 0.45
 ## How often a sheet is sabotaged. Half makes checking worth doing and both
 ## stamps worth pressing; the roll is per document, so runs of either happen.
 const FLAW_CHANCE := 0.5
+
+# -------------------------------------------------------------------------
+# SCORING
+# -------------------------------------------------------------------------
+
+# What each call is worth at the end of the day. Letting someone through is
+# the heavier decision in both directions - it pays the most when the sheet
+# really was clean, and costs the most when it was not.
+const SCORE_APPROVED_RIGHT := 4
+const SCORE_APPROVED_WRONG := -4
+const SCORE_REFUSED_RIGHT := 2
+const SCORE_REFUSED_WRONG := -2
+
+
+## Points for one logged decision. Only handed-back documents are logged, so
+## an applicant sent away un-served scores nothing either way.
+static func score_for(entry: Dictionary) -> int:
+	var approved: bool = entry.get("status", "") == "approved"
+	var document_valid: bool = bool(entry.get("is_correct", true))
+	var judged_right: bool = approved == document_valid
+
+	if approved:
+		return SCORE_APPROVED_RIGHT if judged_right else SCORE_APPROVED_WRONG
+	return SCORE_REFUSED_RIGHT if judged_right else SCORE_REFUSED_WRONG
+
+
+## The whole day's points.
+static func score_for_day(entries: Array) -> int:
+	var total := 0
+	for entry in entries:
+		total += score_for(entry)
+	return total
 
 # -------------------------------------------------------------------------
 # DAILY TRACKING DATA
@@ -54,6 +87,7 @@ const RACES: Array[String] = [
 	"Clown",
 	"Vampire",
 	"Goblin",
+	"Eyeball",
 ]
 
 const SECTORS: Array[String] = [
@@ -92,6 +126,7 @@ const RACE_AGE_LIMITS := {
 	"Clown": {"min": 18, "max": 90},
 	"Vampire": {"min": 100, "max": 900},
 	"Goblin": {"min": 15, "max": 200},
+	"Eyeball": {"min": 5, "max": 60},
 }
 
 const RESTRICTED_SECTORS_PER_RACE := {
@@ -104,6 +139,7 @@ const RESTRICTED_SECTORS_PER_RACE := {
 	"Clown": ["E"],
 	"Vampire": ["A", "B", "C"],
 	"Goblin": ["J"],
+	"Eyeball": ["H"],
 }
 
 const WORKPLACE_CLEARANCE_LEVELS := {
@@ -140,6 +176,7 @@ const MAX_PERMIT_DURATION_YEARS := {
 	"Clown": 5,
 	"Vampire": 20,
 	"Goblin": 5,
+	"Eyeball": 5,
 }
 
 const RESTRICTED_SPECIALTIES_PER_RACE := {
@@ -152,6 +189,7 @@ const RESTRICTED_SPECIALTIES_PER_RACE := {
 	"Clown": ["Surgeon", "Investigator"],
 	"Vampire": ["Farming", "Piloting"],
 	"Goblin": ["Finance", "Records"],
+	"Eyeball": ["Piloting", "Assembly"],
 }
 
 const BODY_TEMP_RANGES_CELSIUS := {
@@ -164,6 +202,7 @@ const BODY_TEMP_RANGES_CELSIUS := {
 	"Clown": {"min": 36.0, "max": 38.0},
 	"Vampire": {"min": 8.0, "max": 18.0},
 	"Goblin": {"min": 33.0, "max": 37.0},
+	"Eyeball": {"min": 20.0, "max": 30.0},
 }
 
 # -------------------------------------------------------------------------
@@ -184,41 +223,57 @@ const RULE_STAGES: Array[Dictionary] = [
 		"check": "AGE",
 		"fields": ["name", "race", "age"],
 		"book": "AGE LIMITS",
+		"card": "NAME, RACE and AGE",
+		"lesson": "Check the [b]AGE[/b] against the applicant's race. Every race has its own range.",
 	},
 	{
 		"check": "WORKSPACE / SPECIALTY",
 		"fields": ["workspace", "specialty"],
 		"book": "WORKSPACES",
+		"card": "WORKSPACE and SPECIALTY",
+		"lesson": "Cards now carry a [b]WORKSPACE[/b] and a [b]SPECIALTY[/b]. The specialty must be a job that workspace actually offers.",
 	},
 	{
 		"check": "SECTOR",
 		"fields": ["sector"],
 		"book": "RESTRICTED SECTORS",
+		"card": "SECTOR",
+		"lesson": "Cards now carry a [b]SECTOR[/b]. Some races are barred from certain sectors outright.",
 	},
 	{
 		"check": "NAME / SECTOR",
 		"fields": [],
 		"book": "NAME -> SECTOR",
+		"card": "",
+		"lesson": "A surname's first letter decides which sectors it opens - A-G, H-N and O-Z each allow different ones. The sector on the card must be one of them.",
 	},
 	{
 		"check": "CLEARANCE",
 		"fields": ["clearance"],
 		"book": "CLEARANCE",
+		"card": "CLEARANCE",
+		"lesson": "Cards now carry a [b]CLEARANCE[/b] level. It has to meet or beat what their workspace demands.",
 	},
 	{
 		"check": "PERMIT DURATION",
 		"fields": ["permit"],
 		"book": "PERMIT DURATION",
+		"card": "PERMIT DATE and EXPIRY",
+		"lesson": "Cards now carry [b]PERMIT[/b] dates. A permit may not run longer than that race's limit, and may not expire before it was issued.",
 	},
 	{
 		"check": "BODY TEMPERATURE",
 		"fields": ["temp"],
 		"book": "BODY TEMP",
+		"card": "TEMP",
+		"lesson": "Cards now carry a [b]TEMP[/b]. Each race runs at its own temperature - a warm ghost is a forgery.",
 	},
 	{
 		"check": "SPECIALTY",
 		"fields": [],
 		"book": "SPECIALTY BANS",
+		"card": "",
+		"lesson": "Some races are banned from particular jobs even where the workspace offers them. Check the specialty against the race.",
 	},
 ]
 
@@ -319,8 +374,14 @@ var body_temperature: float = 0.0
 # READY
 # -------------------------------------------------------------------------
 
+## Where the card comes to rest, taken from where the node was placed in the
+## editor rather than a constant, so moving it in the scene actually moves it.
+var shown_position := SHOWN_POS
+
+
 func _ready() -> void:
-	position = HIDDEN_POS
+	shown_position = position
+	position = hidden_position()
 	visible = false
 	clear_mark()
 
@@ -330,6 +391,7 @@ func _ready() -> void:
 	add_to_group("document")
 
 	Global.customer_arrived.connect(on_customer_arrived)
+	Global.next_customer_requested.connect(on_next_customer_requested)
 
 # -------------------------------------------------------------------------
 # CUSTOMER / DOCUMENT FLOW
@@ -339,7 +401,49 @@ func _ready() -> void:
 # the sheet is rolled exactly once per customer and slides in as they arrive.
 func on_customer_arrived() -> void:
 	roll_person()
-	slide_to(SHOWN_POS)
+	# Start on the applicant so the sheet reads as coming out of them, then
+	# travel down to the counter.
+	position = hidden_position()
+	slide_to(shown_position)
+	# The paper changes hands in both directions, so it is heard both times.
+	Audio.play("paperpass", 0.04)
+
+
+# Ringing for the next applicant sends the current one away, and their card
+# goes with them. Leaving it on the counter stranded a sheet belonging to
+# nobody, which the next arrival would then overwrite mid-inspection.
+#
+# Nothing is logged: they were never served, so they do not count toward the
+# quota and cannot be scored either way.
+func on_next_customer_requested() -> void:
+	if not visible:
+		return
+	abandon()
+
+
+func abandon() -> void:
+	dragging = false
+	is_stamped = false
+	stamp_decision = "unprocessed"
+
+	if tween and tween.is_valid():
+		tween.kill()
+
+	position = hidden_position()
+	visible = false
+	clear_mark()
+
+
+# Where the card sits when it is not on the counter: on the applicant, so it
+# emerges from and returns to whoever is at the window.
+func hidden_position() -> Vector2:
+	var customer := get_tree().get_first_node_in_group("customer") as Node2D
+	if customer == null:
+		return HIDDEN_POS
+	var parent := get_parent() as Node2D
+	if parent == null:
+		return customer.global_position
+	return parent.to_local(customer.global_position)
 
 # -------------------------------------------------------------------------
 # GENERATE DOCUMENT
@@ -845,11 +949,10 @@ func hand_to_customer() -> void:
 	if tween and tween.is_valid():
 		tween.kill()
 
-	position = HIDDEN_POS
+	position = hidden_position()
 	visible = false
 
-	Audio.play("paper", 0.06)
-	Audio.play("leave")
+	Audio.play("paperpass", 0.04)
 	Global.document_processed.emit()
 
 

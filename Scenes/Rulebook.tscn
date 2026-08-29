@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://dlc08ifi6qaor"]
 
 [ext_resource type="Script" uid="uid://dpy36kybealfs" path="res://Scripts/rule_book.gd" id="1_e5o5y"]
-[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="2_6g86t"]
 [ext_resource type="FontFile" uid="uid://si3fj572hj3y" path="res://Assets/fonts/PixelOperator8.ttf" id="3_h14ux"]
 [ext_resource type="FontFile" uid="uid://dap74o686yqd8" path="res://Assets/fonts/PixelOperator8-Bold.ttf" id="4_n65vo"]
+[ext_resource type="Texture2D" uid="uid://bv2o5wdnyjtfa" path="res://Assets/paper/paper_note.png" id="6_paper"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
 size = Vector2(90, 103)
@@ -87,10 +87,9 @@ color = Color(0.9607843, 0.9411765, 0.85882354, 1)
 metadata/_edit_use_anchors_ = true
 
 [node name="Paper" type="Sprite2D" parent="." unique_id=406333348]
-modulate = Color(0.96, 0.94, 0.86, 1)
+texture_filter = 1
 position = Vector2(-7.6293945e-06, 8.000001)
-scale = Vector2(0.26498422, 0.5)
-texture = ExtResource("2_6g86t")
+texture = ExtResource("6_paper")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=596629549]
 z_index = 2

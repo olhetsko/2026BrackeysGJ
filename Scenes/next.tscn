@@ -13,6 +13,7 @@ offset_bottom = 175.0
 focus_mode = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1908008601]
+texture_filter = 1
 modulate = Color(0.36078432, 0.14509805, 0, 1)
 position = Vector2(142.50002, 87.00001)
 scale = Vector2(0.89905375, 0.88775516)

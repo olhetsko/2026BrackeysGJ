@@ -1,36 +1,38 @@
 [gd_scene format=3 uid="uid://c5t4mp0bj7q2x"]
 
 [ext_resource type="Script" path="res://Scripts/stamp.gd" id="1_govvf"]
+[ext_resource type="Texture2D" uid="uid://whfymclmak62" path="res://Assets/pixilart-drawing (19).png" id="2_rest0"]
+[ext_resource type="Texture2D" uid="uid://gw414hid55js" path="res://Assets/pixilart-drawing (16).png" id="3_pres0"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
-size = Vector2(40, 31)
+[sub_resource type="RectangleShape2D" id="Handle_4syrc"]
+size = Vector2(10, 14)
+
+[sub_resource type="RectangleShape2D" id="Base_4syrc"]
+size = Vector2(23, 11)
 
 [node name="Stamp" type="Node2D" unique_id=884213770]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_govvf")
-stamp_color = Color(0.07450981, 0.91764706, 0, 1)
+stamp_color = Color(0.14509805, 0.7176471, 0.1254902, 1)
 accepts = true
+rest_texture = ExtResource("2_rest0")
+pressed_texture = ExtResource("3_pres0")
 
-[node name="Handle" type="ColorRect" parent="." unique_id=279200291]
-offset_left = -9.0
-offset_top = -20.0
-offset_right = 9.0
-offset_bottom = -9.0
-mouse_filter = 2
-color = Color(0.13725491, 0.6627451, 0.11372549, 1)
-
-[node name="Body" type="ColorRect" parent="." unique_id=1894042745]
-offset_left = -18.0
-offset_top = -10.0
-offset_right = 18.0
-offset_bottom = 14.0
-mouse_filter = 2
-color = Color(0.07450981, 0.91764706, 0, 1)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1894042745]
+texture_filter = 1
+position = Vector2(0, -2)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("2_rest0")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=582896392]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=551189820]
-shape = SubResource("RectangleShape2D_4syrc")
+[node name="HandleShape" type="CollisionShape2D" parent="Area2D" unique_id=551189820]
+position = Vector2(0, -4)
+shape = SubResource("Handle_4syrc")
+
+[node name="BaseShape" type="CollisionShape2D" parent="Area2D" unique_id=551189821]
+position = Vector2(0, 9)
+shape = SubResource("Base_4syrc")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

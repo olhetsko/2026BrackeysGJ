@@ -10,5 +10,5 @@ func _ready() -> void:
 
 
 func _on_play_pressed() -> void:
-	Audio.play("click")
+	Audio.play("start")
 	get_tree().change_scene_to_file("res://Game/Game.tscn")
