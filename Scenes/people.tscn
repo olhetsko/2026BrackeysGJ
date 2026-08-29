@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" uid="uid://de23ghyw4w6j4" path="res://Scripts/People.gd" id="1_lijfn"]
 [ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="2_vg6k0"]
+[ext_resource type="Texture2D" uid="uid://b7aj2tvqahsos" path="res://Assets/pixil-frame-0 (13).png" id="3_0gt76"]
 [ext_resource type="Texture2D" uid="uid://bnk6xmq1rgx7" path="res://Assets/pixil-frame-0.png" id="3_frank"]
+[ext_resource type="Texture2D" uid="uid://cn4hji1ax3lvt" path="res://Assets/pixil-frame-0 (4)(1).png" id="4_b2drq"]
 [ext_resource type="Texture2D" uid="uid://ccvels3yyulwy" path="res://Assets/pixil-frame-0 (6).png" id="4_clown"]
 [ext_resource type="Texture2D" uid="uid://bv7rr7dbfi75f" path="res://Assets/pixil-frame-0 (7).png" id="5_potat"]
 [ext_resource type="Texture2D" uid="uid://cn3vlxx7dy0d2" path="res://Assets/pixil-frame-0 (5).png" id="6_eyebl"]
@@ -14,34 +16,11 @@ script = ExtResource("1_lijfn")
 
 [node name="Zombie" type="Node2D" parent="Races" unique_id=1120044100]
 
-[node name="Body" type="Sprite2D" parent="Races/Zombie" unique_id=1120044101]
-modulate = Color(0.34901962, 0.54901963, 0.29803923, 1)
+[node name="Sprite2D" type="Sprite2D" parent="Races/Zombie" unique_id=1942911196]
 texture_filter = 1
-position = Vector2(-0.5625, 11)
-scale = Vector2(0.17350158, 0.15306123)
-texture = ExtResource("2_vg6k0")
-
-[node name="Head" type="Sprite2D" parent="Races/Zombie" unique_id=1120044102]
-modulate = Color(0.44705883, 0.6509804, 0.3764706, 1)
-texture_filter = 1
-position = Vector2(-3, -18)
-rotation = 0.12
-scale = Vector2(0.06940063, 0.15306123)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeLeft" type="Sprite2D" parent="Races/Zombie" unique_id=1120044103]
-modulate = Color(0.05, 0.05, 0.05, 1)
-texture_filter = 1
-position = Vector2(-9, -20)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeRight" type="Sprite2D" parent="Races/Zombie" unique_id=1120044104]
-modulate = Color(0.05, 0.05, 0.05, 1)
-texture_filter = 1
-position = Vector2(4, -21)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
+position = Vector2(-1, 8)
+scale = Vector2(0.68564093, 0.68564093)
+texture = ExtResource("3_frank")
 
 [node name="Frankenstein" type="Node2D" parent="Races" unique_id=1120044200]
 
@@ -56,113 +35,18 @@ texture = ExtResource("3_frank")
 [node name="Body" type="Sprite2D" parent="Races/Mummy" unique_id=1120044301]
 modulate = Color(0.84705883, 0.8039216, 0.65882355, 1)
 texture_filter = 1
-position = Vector2(-0.5625, 11)
-scale = Vector2(0.17350158, 0.15306123)
-texture = ExtResource("2_vg6k0")
-
-[node name="Head" type="Sprite2D" parent="Races/Mummy" unique_id=1120044302]
-modulate = Color(0.9019608, 0.85882354, 0.72156864, 1)
-texture_filter = 1
-position = Vector2(-1, -18)
-scale = Vector2(0.06940063, 0.15306123)
-texture = ExtResource("2_vg6k0")
-
-[node name="BandageA" type="Sprite2D" parent="Races/Mummy" unique_id=1120044303]
-modulate = Color(0.6509804, 0.6, 0.48235294, 1)
-texture_filter = 1
-position = Vector2(-0.5625, 4)
-scale = Vector2(0.15772872, 0.015306122)
-texture = ExtResource("2_vg6k0")
-
-[node name="BandageB" type="Sprite2D" parent="Races/Mummy" unique_id=1120044304]
-modulate = Color(0.6509804, 0.6, 0.48235294, 1)
-texture_filter = 1
-position = Vector2(-0.5625, 15)
-scale = Vector2(0.15772872, 0.015306122)
-texture = ExtResource("2_vg6k0")
-
-[node name="BandageHead" type="Sprite2D" parent="Races/Mummy" unique_id=1120044305]
-modulate = Color(0.6509804, 0.6, 0.48235294, 1)
-texture_filter = 1
-position = Vector2(-1, -14)
-scale = Vector2(0.06940063, 0.015306122)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeLeft" type="Sprite2D" parent="Races/Mummy" unique_id=1120044306]
-modulate = Color(0.05, 0.05, 0.05, 1)
-texture_filter = 1
-position = Vector2(-8, -21)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeRight" type="Sprite2D" parent="Races/Mummy" unique_id=1120044307]
-modulate = Color(0.05, 0.05, 0.05, 1)
-texture_filter = 1
-position = Vector2(6, -21)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
+position = Vector2(-1.5258789e-05, 17.000002)
+scale = Vector2(0.01905092, 0.016806515)
+texture = ExtResource("3_0gt76")
 
 [node name="Dragon" type="Node2D" parent="Races" unique_id=1120044400]
 
-[node name="WingLeft" type="Sprite2D" parent="Races/Dragon" unique_id=1120044401]
-modulate = Color(0.44705883, 0.13725491, 0.09803922, 1)
-texture_filter = 1
-position = Vector2(-26, 4)
-rotation = -0.3
-scale = Vector2(0.08201893, 0.11224489)
-texture = ExtResource("2_vg6k0")
-
-[node name="WingRight" type="Sprite2D" parent="Races/Dragon" unique_id=1120044402]
-modulate = Color(0.44705883, 0.13725491, 0.09803922, 1)
-texture_filter = 1
-position = Vector2(25, 4)
-rotation = 0.3
-scale = Vector2(0.08201893, 0.11224489)
-texture = ExtResource("2_vg6k0")
-
 [node name="Body" type="Sprite2D" parent="Races/Dragon" unique_id=1120044403]
-modulate = Color(0.6509804, 0.21960784, 0.14901961, 1)
+modulate = Color(1, 1, 0.5647059, 1)
 texture_filter = 1
-position = Vector2(-0.5625, 11)
-scale = Vector2(0.17350158, 0.15306123)
-texture = ExtResource("2_vg6k0")
-
-[node name="Head" type="Sprite2D" parent="Races/Dragon" unique_id=1120044404]
-modulate = Color(0.72156864, 0.28235295, 0.18039216, 1)
-texture_filter = 1
-position = Vector2(-1, -19)
-scale = Vector2(0.06309148, 0.1734694)
-texture = ExtResource("2_vg6k0")
-
-[node name="HornLeft" type="Sprite2D" parent="Races/Dragon" unique_id=1120044405]
-modulate = Color(0.9019608, 0.85490197, 0.7019608, 1)
-texture_filter = 1
-position = Vector2(-6, -32)
-rotation = -0.25
-scale = Vector2(0.015772872, 0.045918368)
-texture = ExtResource("2_vg6k0")
-
-[node name="HornRight" type="Sprite2D" parent="Races/Dragon" unique_id=1120044406]
-modulate = Color(0.9019608, 0.85490197, 0.7019608, 1)
-texture_filter = 1
-position = Vector2(4, -32)
-rotation = 0.25
-scale = Vector2(0.015772872, 0.045918368)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeLeft" type="Sprite2D" parent="Races/Dragon" unique_id=1120044407]
-modulate = Color(0.98, 0.85, 0.2, 1)
-texture_filter = 1
-position = Vector2(-7, -21)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeRight" type="Sprite2D" parent="Races/Dragon" unique_id=1120044408]
-modulate = Color(0.98, 0.85, 0.2, 1)
-texture_filter = 1
-position = Vector2(5, -21)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
+position = Vector2(1, -6)
+scale = Vector2(0.01537544, 0.0135640465)
+texture = ExtResource("4_b2drq")
 
 [node name="Ghost" type="Node2D" parent="Races" unique_id=1120044500]
 
@@ -198,50 +82,6 @@ position = Vector2(-0.5625, 11)
 scale = Vector2(0.17350158, 0.15306123)
 texture = ExtResource("2_vg6k0")
 
-[node name="CollarLeft" type="Sprite2D" parent="Races/Vampire" unique_id=1120044802]
-modulate = Color(0.54901963, 0.09803922, 0.13725491, 1)
-texture_filter = 1
-position = Vector2(-11, -2)
-rotation = -0.5
-scale = Vector2(0.031545743, 0.045918368)
-texture = ExtResource("2_vg6k0")
-
-[node name="CollarRight" type="Sprite2D" parent="Races/Vampire" unique_id=1120044803]
-modulate = Color(0.54901963, 0.09803922, 0.13725491, 1)
-texture_filter = 1
-position = Vector2(9, -2)
-rotation = 0.5
-scale = Vector2(0.031545743, 0.045918368)
-texture = ExtResource("2_vg6k0")
-
-[node name="Head" type="Sprite2D" parent="Races/Vampire" unique_id=1120044804]
-modulate = Color(0.88235295, 0.84705883, 0.84705883, 1)
-texture_filter = 1
-position = Vector2(-1, -18)
-scale = Vector2(0.06940063, 0.15306123)
-texture = ExtResource("2_vg6k0")
-
-[node name="Hair" type="Sprite2D" parent="Races/Vampire" unique_id=1120044805]
-modulate = Color(0.09803922, 0.078431375, 0.11764706, 1)
-texture_filter = 1
-position = Vector2(-1, -27)
-scale = Vector2(0.07570978, 0.020408163)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeLeft" type="Sprite2D" parent="Races/Vampire" unique_id=1120044806]
-modulate = Color(0.7019608, 0.05882353, 0.05882353, 1)
-texture_filter = 1
-position = Vector2(-8, -20)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeRight" type="Sprite2D" parent="Races/Vampire" unique_id=1120044807]
-modulate = Color(0.7019608, 0.05882353, 0.05882353, 1)
-texture_filter = 1
-position = Vector2(6, -20)
-scale = Vector2(0.012618297, 0.035714287)
-texture = ExtResource("2_vg6k0")
-
 [node name="Goblin" type="Node2D" parent="Races" unique_id=1120044900]
 
 [node name="Body" type="Sprite2D" parent="Races/Goblin" unique_id=1120044901]
@@ -249,43 +89,6 @@ modulate = Color(0.41960785, 0.5176471, 0.24705882, 1)
 texture_filter = 1
 position = Vector2(-0.5625, 14)
 scale = Vector2(0.14195584, 0.12244898)
-texture = ExtResource("2_vg6k0")
-
-[node name="Head" type="Sprite2D" parent="Races/Goblin" unique_id=1120044902]
-modulate = Color(0.5019608, 0.6, 0.30980393, 1)
-texture_filter = 1
-position = Vector2(-1, -12)
-scale = Vector2(0.07570978, 0.13265306)
-texture = ExtResource("2_vg6k0")
-
-[node name="EarLeft" type="Sprite2D" parent="Races/Goblin" unique_id=1120044903]
-modulate = Color(0.5019608, 0.6, 0.30980393, 1)
-texture_filter = 1
-position = Vector2(-15, -14)
-rotation = -0.5
-scale = Vector2(0.025236594, 0.07142857)
-texture = ExtResource("2_vg6k0")
-
-[node name="EarRight" type="Sprite2D" parent="Races/Goblin" unique_id=1120044904]
-modulate = Color(0.5019608, 0.6, 0.30980393, 1)
-texture_filter = 1
-position = Vector2(13, -14)
-rotation = 0.5
-scale = Vector2(0.025236594, 0.07142857)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeLeft" type="Sprite2D" parent="Races/Goblin" unique_id=1120044905]
-modulate = Color(0.95, 0.85, 0.15, 1)
-texture_filter = 1
-position = Vector2(-7, -14)
-scale = Vector2(0.012618297, 0.030612245)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeRight" type="Sprite2D" parent="Races/Goblin" unique_id=1120044906]
-modulate = Color(0.95, 0.85, 0.15, 1)
-texture_filter = 1
-position = Vector2(5, -14)
-scale = Vector2(0.012618297, 0.030612245)
 texture = ExtResource("2_vg6k0")
 
 [node name="Eyeball" type="Node2D" parent="Races" unique_id=1120045000]

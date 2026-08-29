@@ -1,32 +1,27 @@
 [gd_scene format=3 uid="uid://bpqeldrpoiivv"]
 
-[ext_resource type="Texture2D" uid="uid://c20rccibyf4p0" path="res://Assets/Box.png" id="1_127bi"]
 [ext_resource type="Script" uid="uid://dndqml4ko86xl" path="res://Scenes/next.gd" id="1_uhwb8"]
-[ext_resource type="FontFile" uid="uid://si3fj572hj3y" path="res://Assets/fonts/PixelOperator8.ttf" id="2_uhwb8"]
+[ext_resource type="Texture2D" uid="uid://dq2g5d8l0s3u" path="res://Assets/Screenshot_3.png" id="2_127bi"]
 
 [node name="Next" type="Node2D" unique_id=1045857545]
 script = ExtResource("1_uhwb8")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1447098512]
+offset_left = -6.0
+offset_top = -5.0
+offset_right = 328.0
+offset_bottom = 125.0
+mouse_filter = 2
+color = Color(0.3489, 0.12787208, 2.4065375e-08, 1)
+
 [node name="Button" type="Button" parent="." unique_id=663211193]
-offset_right = 284.0
-offset_bottom = 175.0
+offset_right = 323.0
+offset_bottom = 120.0
 focus_mode = 0
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1908008601]
-texture_filter = 1
-modulate = Color(0.36078432, 0.14509805, 0, 1)
-position = Vector2(142.50002, 87.00001)
-scale = Vector2(0.89905375, 0.88775516)
-texture = ExtResource("1_127bi")
-
-[node name="Label" type="Label" parent="." unique_id=1454447935]
-offset_left = 6.0
-offset_top = 50.0
-offset_right = 303.99005
-offset_bottom = 195.0
-scale = Vector2(0.9362729, 1)
-theme_override_fonts/font = ExtResource("2_uhwb8")
-theme_override_font_sizes/font_size = 81
-text = "Next"
+[node name="Screenshot3" type="Sprite2D" parent="." unique_id=1609294960]
+position = Vector2(161, 60)
+scale = Vector2(0.5735294, 0.5735295)
+texture = ExtResource("2_127bi")
 
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
