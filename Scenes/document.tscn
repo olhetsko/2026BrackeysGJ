@@ -6,6 +6,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
 size = Vector2(186, 270)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_74kmw"]
+radius = 29.068884
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hndy0"]
+size = Vector2(35.470043, 70.489105)
+
 [node name="Document" type="Node2D" unique_id=771700449]
 position = Vector2(-12, -9)
 script = ExtResource("2_doc0h")
@@ -252,5 +258,14 @@ mouse_filter = 2
 [node name="Area2D" type="Area2D" parent="." unique_id=1665503827]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=208693053]
-position = Vector2(12, 43)
+position = Vector2(336, 48)
 shape = SubResource("RectangleShape2D_4syrc")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" unique_id=1607373784]
+position = Vector2(58, 142)
+shape = SubResource("CircleShape2D_74kmw")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Area2D" unique_id=1279340569]
+position = Vector2(173, 57)
+rotation = 1.5865821
+shape = SubResource("RectangleShape2D_hndy0")

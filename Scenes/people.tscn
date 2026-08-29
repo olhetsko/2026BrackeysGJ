@@ -173,34 +173,6 @@ position = Vector2(-0.5625, 8)
 scale = Vector2(0.14195584, 0.13265306)
 texture = ExtResource("2_vg6k0")
 
-[node name="Tail" type="Sprite2D" parent="Races/Ghost" unique_id=1120044502]
-modulate = Color(0.7490196, 0.81960785, 0.9490196, 0.3529412)
-texture_filter = 1
-position = Vector2(-0.5625, 21)
-scale = Vector2(0.09463722, 0.05102041)
-texture = ExtResource("2_vg6k0")
-
-[node name="Head" type="Sprite2D" parent="Races/Ghost" unique_id=1120044503]
-modulate = Color(0.81960785, 0.88235295, 0.98039216, 0.7058824)
-texture_filter = 1
-position = Vector2(-1, -17)
-scale = Vector2(0.06940063, 0.14285715)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeLeft" type="Sprite2D" parent="Races/Ghost" unique_id=1120044504]
-modulate = Color(0.15, 0.2, 0.32, 1)
-texture_filter = 1
-position = Vector2(-8, -19)
-scale = Vector2(0.012618297, 0.040816326)
-texture = ExtResource("2_vg6k0")
-
-[node name="EyeRight" type="Sprite2D" parent="Races/Ghost" unique_id=1120044505]
-modulate = Color(0.15, 0.2, 0.32, 1)
-texture_filter = 1
-position = Vector2(6, -19)
-scale = Vector2(0.012618297, 0.040816326)
-texture = ExtResource("2_vg6k0")
-
 [node name="Potato" type="Node2D" parent="Races" unique_id=1120044600]
 
 [node name="Art" type="Sprite2D" parent="Races/Potato" unique_id=1120044601]
