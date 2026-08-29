@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://by061icf813pe"]
 
 [ext_resource type="Script" uid="uid://b3xn56rrgoui2" path="res://Scripts/main_screen.gd" id="1_lkuaq"]
+[ext_resource type="Texture2D" uid="uid://txxrlfyopt7h" path="res://Assets/BG.png" id="2_camdv"]
 [ext_resource type="FontFile" uid="uid://dap74o686yqd8" path="res://Assets/fonts/PixelOperator8-Bold.ttf" id="2_ikphv"]
+[ext_resource type="Texture2D" uid="uid://caar3v6e02f0m" path="res://Assets/Screenshot_2.png" id="4_plate"]
 
 [node name="Main screen" type="Control" unique_id=103193222]
 layout_mode = 3
@@ -10,29 +12,44 @@ offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_lkuaq")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1094575858]
+[node name="Bg" type="Sprite2D" parent="." unique_id=1603524227]
+position = Vector2(0, -1)
+scale = Vector2(0.23857598, 0.23857598)
+texture = ExtResource("2_camdv")
+
+[node name="Title" type="Sprite2D" parent="." unique_id=1094575858]
+texture_filter = 1
+scale = Vector2(0.2297, 0.2297)
+
+[node name="PlatePatch" type="ColorRect" parent="." unique_id=1094575900]
 layout_mode = 0
-offset_left = -244.0
-offset_top = -157.0
-offset_right = 245.0
-offset_bottom = 162.0
-color = Color(0, 1, 1, 1)
+offset_left = -84.0
+offset_top = -8.8
+offset_right = 83.6
+offset_bottom = 34.3
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="PlayPlate" type="Sprite2D" parent="." unique_id=1094575901]
+texture_filter = 1
+position = Vector2(-0.115, 13.435)
+scale = Vector2(0.59349, 0.55413)
+texture = ExtResource("4_plate")
 
 [node name="play" type="Button" parent="." unique_id=1228040744]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = -3.15
-anchor_top = -2.15
-anchor_right = 2.775
-anchor_bottom = 1.575
-offset_left = 69.0
-offset_top = 70.0
-offset_right = -53.0
-offset_bottom = -30.0
+texture_filter = 1
+layout_mode = 0
+offset_left = -79.9
+offset_top = -4.0
+offset_right = 79.7
+offset_bottom = 30.9
+focus_mode = 0
 theme_override_fonts/font = ExtResource("2_ikphv")
-text = "START"
+flat = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1382606572]
 zoom = Vector2(3, 3)
 
+[connection signal="button_down" from="play" to="." method="_on_play_button_down"]
+[connection signal="button_up" from="play" to="." method="_on_play_button_up"]
 [connection signal="pressed" from="play" to="." method="_on_play_pressed"]

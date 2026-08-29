@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bi4rqxjiwpegb" path="res://Assets/paper/paper_card.png" id="1_mj70b"]
 [ext_resource type="Script" uid="uid://qho0ylaedjec" path="res://Scripts/document.gd" id="2_doc0h"]
+[ext_resource type="Texture2D" uid="uid://c21caibgwaho4" path="res://Assets/pixil-frame-0(1).png" id="3_mark0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
 size = Vector2(186, 270)
@@ -242,12 +243,11 @@ text = "temp"
 clip_text = true
 metadata/_edit_use_anchors_ = true
 
-[node name="Mark" type="ColorRect" parent="." unique_id=505163214]
-offset_left = 55.0
-offset_top = 140.0
-offset_right = 76.0
-offset_bottom = 160.0
-mouse_filter = 2
+[node name="Mark" type="Sprite2D" parent="." unique_id=505163214]
+texture_filter = 1
+position = Vector2(80.3, 169.6)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("3_mark0")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1665503827]
 

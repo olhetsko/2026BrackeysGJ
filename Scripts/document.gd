@@ -85,7 +85,6 @@ const RACES: Array[String] = [
 	"Ghost",
 	"Potato",
 	"Clown",
-	"Vampire",
 	"Goblin",
 	"Eyeball",
 ]
@@ -124,7 +123,6 @@ const RACE_AGE_LIMITS := {
 	"Ghost": {"min": 50, "max": 10000},
 	"Potato": {"min": 1, "max": 3},
 	"Clown": {"min": 18, "max": 90},
-	"Vampire": {"min": 100, "max": 900},
 	"Goblin": {"min": 15, "max": 200},
 	"Eyeball": {"min": 5, "max": 60},
 }
@@ -137,7 +135,6 @@ const RESTRICTED_SECTORS_PER_RACE := {
 	"Ghost": ["E"],
 	"Potato": [],
 	"Clown": ["E"],
-	"Vampire": ["A", "B", "C"],
 	"Goblin": ["J"],
 	"Eyeball": ["H"],
 }
@@ -174,7 +171,6 @@ const MAX_PERMIT_DURATION_YEARS := {
 	"Ghost": 20,
 	"Potato": 2,
 	"Clown": 5,
-	"Vampire": 20,
 	"Goblin": 5,
 	"Eyeball": 5,
 }
@@ -187,7 +183,6 @@ const RESTRICTED_SPECIALTIES_PER_RACE := {
 	"Ghost": ["Firefighting"],
 	"Potato": ["Firefighting"],
 	"Clown": ["Surgeon", "Investigator"],
-	"Vampire": ["Farming", "Piloting"],
 	"Goblin": ["Finance", "Records"],
 	"Eyeball": ["Piloting", "Assembly"],
 }
@@ -200,7 +195,6 @@ const BODY_TEMP_RANGES_CELSIUS := {
 	"Ghost": {"min": -20.0, "max": 10.0},
 	"Potato": {"min": 4.0, "max": 12.0},
 	"Clown": {"min": 36.0, "max": 38.0},
-	"Vampire": {"min": 8.0, "max": 18.0},
 	"Goblin": {"min": 33.0, "max": 37.0},
 	"Eyeball": {"min": 20.0, "max": 30.0},
 }

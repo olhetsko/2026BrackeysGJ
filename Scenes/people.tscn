@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://ccvels3yyulwy" path="res://Assets/pixil-frame-0 (6).png" id="4_clown"]
 [ext_resource type="Texture2D" uid="uid://bv7rr7dbfi75f" path="res://Assets/pixil-frame-0 (7).png" id="5_potat"]
 [ext_resource type="Texture2D" uid="uid://cn3vlxx7dy0d2" path="res://Assets/pixil-frame-0 (5).png" id="6_eyebl"]
+[ext_resource type="Texture2D" uid="uid://d6nw1xbry0af" path="res://Assets/pixil-frame-0 (1)(1).png" id="7_ghost"]
+[ext_resource type="Texture2D" uid="uid://d3vmaoo1j6yic" path="res://Assets/pixil-frame-0 (1)(2).png" id="8_gobln"]
+[ext_resource type="Texture2D" uid="uid://b3p644ubkvkf7" path="res://Assets/frankenstein.png" id="9_frank"]
 
 [node name="People" type="Node2D" unique_id=1226147756]
 script = ExtResource("1_lijfn")
@@ -16,85 +19,72 @@ script = ExtResource("1_lijfn")
 
 [node name="Zombie" type="Node2D" parent="Races" unique_id=1120044100]
 
-[node name="Sprite2D" type="Sprite2D" parent="Races/Zombie" unique_id=1942911196]
+[node name="Art" type="Sprite2D" parent="Races/Zombie" unique_id=1942911196]
 texture_filter = 1
-position = Vector2(-1, 8)
-scale = Vector2(0.68564093, 0.68564093)
+position = Vector2(0, -1.5)
+scale = Vector2(0.8406, 0.8406)
 texture = ExtResource("3_frank")
 
 [node name="Frankenstein" type="Node2D" parent="Races" unique_id=1120044200]
 
 [node name="Art" type="Sprite2D" parent="Races/Frankenstein" unique_id=1120044201]
 texture_filter = 1
-position = Vector2(0, -8)
-scale = Vector2(0.26, 0.26)
-texture = ExtResource("3_frank")
+position = Vector2(0, -9.2)
+scale = Vector2(0.271, 0.271)
+texture = ExtResource("9_frank")
 
 [node name="Mummy" type="Node2D" parent="Races" unique_id=1120044300]
 
-[node name="Body" type="Sprite2D" parent="Races/Mummy" unique_id=1120044301]
-modulate = Color(0.84705883, 0.8039216, 0.65882355, 1)
+[node name="Art" type="Sprite2D" parent="Races/Mummy" unique_id=1120044301]
 texture_filter = 1
-position = Vector2(-1.5258789e-05, 17.000002)
-scale = Vector2(0.01905092, 0.016806515)
+position = Vector2(0, 12.6)
+scale = Vector2(0.725, 0.725)
 texture = ExtResource("3_0gt76")
 
 [node name="Dragon" type="Node2D" parent="Races" unique_id=1120044400]
 
-[node name="Body" type="Sprite2D" parent="Races/Dragon" unique_id=1120044403]
-modulate = Color(1, 1, 0.5647059, 1)
+[node name="Art" type="Sprite2D" parent="Races/Dragon" unique_id=1120044403]
 texture_filter = 1
-position = Vector2(1, -6)
-scale = Vector2(0.01537544, 0.0135640465)
+position = Vector2(0, -1.7)
+scale = Vector2(0.4567, 0.4567)
 texture = ExtResource("4_b2drq")
 
 [node name="Ghost" type="Node2D" parent="Races" unique_id=1120044500]
 
-[node name="Body" type="Sprite2D" parent="Races/Ghost" unique_id=1120044501]
-modulate = Color(0.7490196, 0.81960785, 0.9490196, 0.61960787)
+[node name="Art" type="Sprite2D" parent="Races/Ghost" unique_id=1120044501]
 texture_filter = 1
-position = Vector2(-0.5625, 8)
-scale = Vector2(0.14195584, 0.13265306)
-texture = ExtResource("2_vg6k0")
+position = Vector2(0, 1.2)
+scale = Vector2(0.5476, 0.5476)
+texture = ExtResource("7_ghost")
 
 [node name="Potato" type="Node2D" parent="Races" unique_id=1120044600]
 
 [node name="Art" type="Sprite2D" parent="Races/Potato" unique_id=1120044601]
 texture_filter = 1
-position = Vector2(0, -8)
-scale = Vector2(0.26, 0.26)
+position = Vector2(-1, -7)
+scale = Vector2(0.2843, 0.2843)
 texture = ExtResource("5_potat")
 
 [node name="Clown" type="Node2D" parent="Races" unique_id=1120044700]
 
 [node name="Art" type="Sprite2D" parent="Races/Clown" unique_id=1120044701]
 texture_filter = 1
-position = Vector2(0, -8)
-scale = Vector2(0.26, 0.26)
+position = Vector2(-2, -5.2)
+scale = Vector2(0.3021, 0.3021)
 texture = ExtResource("4_clown")
-
-[node name="Vampire" type="Node2D" parent="Races" unique_id=1120044800]
-
-[node name="Body" type="Sprite2D" parent="Races/Vampire" unique_id=1120044801]
-modulate = Color(0.11764706, 0.09803922, 0.13725491, 1)
-texture_filter = 1
-position = Vector2(-0.5625, 11)
-scale = Vector2(0.17350158, 0.15306123)
-texture = ExtResource("2_vg6k0")
 
 [node name="Goblin" type="Node2D" parent="Races" unique_id=1120044900]
 
-[node name="Body" type="Sprite2D" parent="Races/Goblin" unique_id=1120044901]
-modulate = Color(0.41960785, 0.5176471, 0.24705882, 1)
+[node name="Art" type="Sprite2D" parent="Races/Goblin" unique_id=1120044901]
 texture_filter = 1
-position = Vector2(-0.5625, 14)
-scale = Vector2(0.14195584, 0.12244898)
-texture = ExtResource("2_vg6k0")
+position = Vector2(0, -9.8)
+scale = Vector2(0.3537, 0.3537)
+texture = ExtResource("8_gobln")
 
 [node name="Eyeball" type="Node2D" parent="Races" unique_id=1120045000]
 
 [node name="Art" type="Sprite2D" parent="Races/Eyeball" unique_id=1120045001]
 texture_filter = 1
-position = Vector2(0, -8)
-scale = Vector2(0.26, 0.26)
+position = Vector2(0, -12.7)
+scale = Vector2(0.271, 0.271)
 texture = ExtResource("6_eyebl")

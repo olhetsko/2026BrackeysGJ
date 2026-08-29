@@ -109,7 +109,6 @@ extends Node2D
 			"Goblin     15 - 200\n" +
 			"Clown      18 - 90\n" +
 			"Fra-stein   1 - 50\n" +
-			"Vampire   100 - 900\n" +
 			"Mummy     100 - 4000\n" +
 			"Dragon    100 - 5000\n" +
 			"Ghost      50 - 10000"
@@ -126,7 +125,7 @@ extends Node2D
 			"Eyeball\n" +
 			"  -> 5 yrs\n\n" +
 			"Mummy, Ghost,\n" +
-			"Dragon, Vampire\n" +
+			"Dragon\n" +
 			"  -> 20 yrs"
 	},
 	{
@@ -134,7 +133,6 @@ extends Node2D
 		"body":
 			"By race:\n\n" +
 			"Dragon   : A, B, C\n" +
-			"Vampire  : A, B, C\n" +
 			"Ghost    : E\n" +
 			"Clown    : E\n" +
 			"Zombie   : J\n" +
@@ -185,7 +183,6 @@ extends Node2D
 			"Zombie     0 -> 10\n" +
 			"Potato     4 -> 12\n" +
 			"Mummy      5 -> 15\n" +
-			"Vampire    8 -> 18\n" +
 			"Eyeball   20 -> 30\n" +
 			"Fra-stein 30 -> 35\n" +
 			"Goblin    33 -> 37\n" +
@@ -204,8 +201,6 @@ extends Node2D
 			"Clown no:\n" +
 			"  Surgeon\n" +
 			"  Investigator\n\n" +
-			"Vampire no:\n" +
-			"  Farming, Piloting\n\n" +
 			"Goblin no:\n" +
 			"  Finance, Records\n\n" +
 			"Eyeball no:\n" +

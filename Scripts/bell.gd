@@ -59,8 +59,9 @@ func _on_button_button_down() -> void:
 	_cooldown_timer.start()
 
 
-# Show the struck frame briefly. A tween rather than an await so a second ring
-# cannot leave the bell stuck on the wrong frame.
+# Show the struck frame briefly, shrunk so the tap reads as a push into the
+# desk, then let it spring back out past full size. A tween rather than an
+# await so a second ring cannot leave the bell stuck on the wrong frame.
 func strike() -> void:
 	if pressed_texture == null or rest_texture == null:
 		return
@@ -68,16 +69,25 @@ func strike() -> void:
 	if _press_tween and _press_tween.is_valid():
 		_press_tween.kill()
 
+	# Struck frame, held small. The bell stands on the desk, so it shrinks
+	# towards its base rather than towards its middle.
 	sprite.texture = pressed_texture
-	sprite.scale = pressed_sprite_scale
-	sprite.position = _rest_sprite_position + pressed_sprite_offset
+	Pop.hold(
+		sprite,
+		pressed_sprite_scale,
+		_rest_sprite_position + pressed_sprite_offset,
+		Pop.ANCHOR_BOTTOM
+	)
+
 	_press_tween = create_tween()
 	_press_tween.tween_interval(PRESS_TIME)
+	# Back to the rest frame, still small, so the spring that follows starts
+	# from the compressed size and pops out from there.
 	_press_tween.tween_callback(func() -> void:
 		sprite.texture = rest_texture
-		sprite.scale = _rest_sprite_scale
-		sprite.position = _rest_sprite_position
+		Pop.hold(sprite, _rest_sprite_scale, _rest_sprite_position, Pop.ANCHOR_BOTTOM)
 	)
+	Pop.spring(_press_tween, sprite, _rest_sprite_scale, _rest_sprite_position)
 
 
 func _on_cooldown_finished() -> void:

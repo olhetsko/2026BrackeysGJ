@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7aj2tvqahsos"
-path="res://.godot/imported/pixil-frame-0 (13).png-2108df264426e44d2c73ef8e487da12e.ctex"
+uid="uid://b3p644ubkvkf7"
+path="res://.godot/imported/frankenstein.png-7ee8e2c626783960210e882855ee8c99.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/pixil-frame-0 (13).png"
-dest_files=["res://.godot/imported/pixil-frame-0 (13).png-2108df264426e44d2c73ef8e487da12e.ctex"]
+source_file="res://Assets/frankenstein.png"
+dest_files=["res://.godot/imported/frankenstein.png-7ee8e2c626783960210e882855ee8c99.ctex"]
 
 [params]
 

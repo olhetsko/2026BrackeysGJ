@@ -3,8 +3,8 @@ extends Node2D
 # Runs the day: tracks how many customers are still owed, and swaps the bell
 # for the Next Day button once the quota is served.
 
-const MIN_CUSTOMERS := 10
-const MAX_CUSTOMERS := 15
+const MIN_CUSTOMERS := 6
+const MAX_CUSTOMERS := 10
 const END_DAY_SCENE := "res://Game/EndDay.tscn"
 
 @onready var bell_node: Node2D = $Bell

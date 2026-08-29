@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dr7n6mvw7gavu" path="res://Scripts/End day.gd" id="1_s3wx3"]
 [ext_resource type="FontFile" uid="uid://dap74o686yqd8" path="res://Assets/fonts/PixelOperator8-Bold.ttf" id="2_jmi45"]
+[ext_resource type="Texture2D" uid="uid://dq2g5d8l0s3u" path="res://Assets/Screenshot_3.png" id="3_next0"]
 
 [node name="End day" type="Control" unique_id=955027991]
 layout_mode = 3
@@ -142,9 +143,15 @@ offset_top = 9.000001
 offset_right = 259.5994
 offset_bottom = 114.507324
 scale = Vector2(0.08890104, 0.08944922)
+focus_mode = 0
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_hover_color = Color(1.2, 1.2, 1.2, 1)
+theme_override_colors/icon_pressed_color = Color(0.72, 0.72, 0.72, 1)
 theme_override_fonts/font = ExtResource("2_jmi45")
 theme_override_font_sizes/font_size = 44
-text = "Next Day"
+icon = ExtResource("3_next0")
+flat = true
+expand_icon = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=789461358]
 position = Vector2(0, -3)
