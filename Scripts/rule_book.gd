@@ -103,38 +103,41 @@ extends Node2D
 	{
 		"header": "AGE LIMITS",
 		"body":
-			"Zombie    1 - 10\n" +
-			"Fra-stein 1 - 50\n" +
-			"Werewolf  18 - 120\n" +
-			"Witch     18 - 300\n" +
-			"Troll       20 - 250\n" +
-			"Sea Mons. 20 - 200\n" +
-			"Mummy   100 - 4000\n" +
-			"Ghost     50 - 10000\n" +
-			"Dragon    100 - 5000"
+			"Potato      1 - 3\n" +
+			"Zombie      1 - 10\n" +
+			"Goblin     15 - 200\n" +
+			"Clown      18 - 90\n" +
+			"Fra-stein   1 - 50\n" +
+			"Vampire   100 - 900\n" +
+			"Mummy     100 - 4000\n" +
+			"Dragon    100 - 5000\n" +
+			"Ghost      50 - 10000"
 	},
 	{
 		"header": "PERMIT DURATION",
 		"body":
 			"Max years a permit\n" +
 			"may stay valid:\n\n" +
-			"Zombie, Frankenstein\n" +
+			"Zombie, Frankenstein,\n" +
+			"Potato\n" +
 			"  -> 2 yrs\n\n" +
-			"Werewolf, Witch, Troll\n" +
+			"Clown, Goblin\n" +
 			"  -> 5 yrs\n\n" +
-			"Sea Monster, Mummy,\n" +
-			"Ghost, Dragon\n" +
+			"Mummy, Ghost,\n" +
+			"Dragon, Vampire\n" +
 			"  -> 20 yrs"
 	},
 	{
 		"header": "RESTRICTED SECTORS",
 		"body":
 			"By race:\n\n" +
-			"Troll       : A, B, C\n" +
-			"Dragon      : A, B, C\n" +
-			"Ghost       : E\n" +
-			"Sea Monster : E\n" +
-			"Zombie      : J"
+			"Dragon   : A, B, C\n" +
+			"Vampire  : A, B, C\n" +
+			"Ghost    : E\n" +
+			"Clown    : E\n" +
+			"Zombie   : J\n" +
+			"Goblin   : J\n\n" +
+			"Others: no limit"
 	},
 	{
 		"header": "NAME -> SECTOR",
@@ -175,30 +178,32 @@ extends Node2D
 	{
 		"header": "BODY TEMP",
 		"body":
-			"Ghost    -20  ->  10\n" +
-			"Zombie    0  ->  10\n" +
-			"Mummy     5  ->  15\n" +
-			"Sea Mons. 10  ->  22\n" +
-			"Fra-stein 30  ->  35\n" +
-			"Troll       35  ->  38\n" +
-			"Werewolf  36  ->  39\n" +
-			"Witch     36  ->  37.5\n" +
-			"Dragon    80  ->  200\n\n" +
+			"Ghost    -20 -> 10\n" +
+			"Zombie     0 -> 10\n" +
+			"Potato     4 -> 12\n" +
+			"Mummy      5 -> 15\n" +
+			"Vampire    8 -> 18\n" +
+			"Fra-stein 30 -> 35\n" +
+			"Goblin    33 -> 37\n" +
+			"Clown     36 -> 38\n" +
+			"Dragon    80 -> 200\n\n" +
 			"(values in °C)"
 	},
 	{
 		"header": "SPECIALTY BANS",
 		"body":
-			"Ghost, Sea Monster\n" +
+			"Ghost, Potato\n" +
 			"  no Firefighting\n\n" +
 			"Zombie no:\n" +
 			"  Translation\n" +
-			"  Broadcasting\n" +
-			"  Speech\n\n" +
-			"Troll no:\n" +
-			"  Robotics\n" +
-			"  Programming\n" +
-			"  Hardware"
+			"  Broadcasting\n\n" +
+			"Clown no:\n" +
+			"  Surgeon\n" +
+			"  Investigator\n\n" +
+			"Vampire no:\n" +
+			"  Farming, Piloting\n\n" +
+			"Goblin no:\n" +
+			"  Finance, Records"
 	}
 ]
 
@@ -219,9 +224,32 @@ extends Node2D
 # STATE
 # ============================================================
 
+const DocumentScript = preload("res://Scripts/document.gd")
+
 var is_dragging := false
 var drag_offset := Vector2.ZERO
 var current_page := 0
+
+## The pages actually in the book today. The rules arrive a day at a time, so
+## the book only ever shows what the player has been given.
+var visible_pages: Array[Dictionary] = []
+
+
+# Keeps the book in step with document.gd's RULE_STAGES: a page appears on the
+# day its rule starts being checked, so the book can never be missing a rule
+# the game is testing, or list one that is not in play yet.
+func rebuild_pages() -> void:
+	var tags := DocumentScript.active_book_tags(Global.current_day)
+	visible_pages.clear()
+
+	for page in pages_data:
+		var header := str(page.get("header", ""))
+		for tag in tags:
+			if header.begins_with(tag):
+				visible_pages.append(page)
+				break
+
+	current_page = clampi(current_page, 0, maxi(0, visible_pages.size() - 1))
 
 
 # ============================================================
@@ -248,14 +276,11 @@ func _ready() -> void:
 			TextServer.SUBPIXEL_POSITIONING_DISABLED
 		)
 
-	if area_2d:
-		area_2d.input_event.connect(_on_area_2d_input_event)
+	rebuild_pages()
 
-	if prev_button:
-		prev_button.pressed.connect(_on_prev_button_pressed)
-
-	if next_button:
-		next_button.pressed.connect(_on_next_button_pressed)
+	# Rulebook.tscn already wires input_event and both button presses to these
+	# methods, so connecting them here too just raised "already connected"
+	# three times on every scene load.
 
 	update_page_display()
 
@@ -296,7 +321,7 @@ func _input(event: InputEvent) -> void:
 
 func update_page_display() -> void:
 
-	if pages_data.is_empty():
+	if visible_pages.is_empty():
 		if header_label:
 			header_label.text = "RULEBOOK"
 		if page_label:
@@ -305,10 +330,10 @@ func update_page_display() -> void:
 			page_indicator.text = "0 / 0"
 		return
 
-	var total := pages_data.size()
+	var total := visible_pages.size()
 	current_page = clamp(current_page, 0, total - 1)
 
-	var entry: Dictionary = pages_data[current_page]
+	var entry: Dictionary = visible_pages[current_page]
 	var header_text: String = str(entry.get("header", ""))
 	var body_text: String = str(entry.get("body", ""))
 
@@ -321,7 +346,6 @@ func update_page_display() -> void:
 	if page_indicator:
 		page_indicator.text = "Page %d / %d" % [current_page + 1, total]
 
-	print("[BOOK] Page ", current_page + 1, " / ", total)
 
 
 # ============================================================
@@ -332,9 +356,11 @@ func _on_prev_button_pressed() -> void:
 	if current_page > 0:
 		current_page -= 1
 		update_page_display()
+		Global.rulebook_page_turned.emit()
 
 
 func _on_next_button_pressed() -> void:
-	if current_page < pages_data.size() - 1:
+	if current_page < visible_pages.size() - 1:
 		current_page += 1
 		update_page_display()
+		Global.rulebook_page_turned.emit()

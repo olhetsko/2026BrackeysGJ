@@ -4,28 +4,24 @@ extends Node2D
 # DOCUMENT POSITIONS / ANIMATION
 # -------------------------------------------------------------------------
 
-const HIDDEN_POS := Vector2(-107.0, -22.0)
-const SHOWN_POS := Vector2(-30.0, 34.0)
+# Hidden sits where the applicant stands, so the sheet slides out of them
+# rather than in from offscreen. Shown is the middle of the counter.
+const HIDDEN_POS := Vector2(0.0, -22.0)
+const SHOWN_POS := Vector2(0.0, 34.0)
 const SLIDE_TIME := 0.45
+
+## How often a sheet is sabotaged. Half makes checking worth doing and both
+## stamps worth pressing; the roll is per document, so runs of either happen.
+const FLAW_CHANCE := 0.5
 
 # -------------------------------------------------------------------------
 # DAILY TRACKING DATA
 # -------------------------------------------------------------------------
 
-static var daily_documents: Array[Dictionary] = []
+# Numbers the documents within a day. Reset in _ready, which runs once per
+# Game.tscn load - that is once per day, since the end-of-day screen reloads
+# the scene. The entries themselves live on Global.daily_documents.
 static var current_day_id: int = 1
-
-# Call this method whenever a new day begins
-static func start_new_day() -> void:
-	daily_documents.clear()
-	current_day_id = 1
-	print("[DOCUMENT MANAGER] New day started. Array and ID reset to 1.")
-
-static func print_daily_summary() -> void:
-	print("================ DAILY LOG SUMMARY ================")
-	for entry in daily_documents:
-		print(entry)
-	print("==================================================")
 
 # -------------------------------------------------------------------------
 # BASIC DATA
@@ -45,16 +41,19 @@ const LAST_NAMES: Array[String] = [
 	"Pemberton", "Quintero", "Rasmussen", "Sandoval", "Thornbury",
 ]
 
+# Each name here must match a Node2D under People/Races in people.tscn - that
+# is the sprite group the applicant walks in wearing. Adding a race means
+# adding its group there and a row in every table below.
 const RACES: Array[String] = [
-	"Werewolf",
+	"Zombie",
 	"Frankenstein",
 	"Mummy",
-	"Zombie",
-	"Ghost",
-	"Witch",
-	"Sea Monster",
-	"Troll",
 	"Dragon",
+	"Ghost",
+	"Potato",
+	"Clown",
+	"Vampire",
+	"Goblin",
 ]
 
 const SECTORS: Array[String] = [
@@ -86,25 +85,25 @@ const WORKSPACES := {
 const RACE_AGE_LIMITS := {
 	"Zombie": {"min": 1, "max": 10},
 	"Frankenstein": {"min": 1, "max": 50},
-	"Werewolf": {"min": 18, "max": 120},
-	"Witch": {"min": 18, "max": 300},
-	"Troll": {"min": 20, "max": 250},
-	"Sea Monster": {"min": 20, "max": 200},
 	"Mummy": {"min": 100, "max": 4000},
-	"Ghost": {"min": 50, "max": 10000},
 	"Dragon": {"min": 100, "max": 5000},
+	"Ghost": {"min": 50, "max": 10000},
+	"Potato": {"min": 1, "max": 3},
+	"Clown": {"min": 18, "max": 90},
+	"Vampire": {"min": 100, "max": 900},
+	"Goblin": {"min": 15, "max": 200},
 }
 
 const RESTRICTED_SECTORS_PER_RACE := {
-	"Troll": ["A", "B", "C"],
+	"Zombie": ["J"],
+	"Frankenstein": [],
+	"Mummy": [],
 	"Dragon": ["A", "B", "C"],
 	"Ghost": ["E"],
-	"Sea Monster": ["E"],
-	"Zombie": ["J"],
-	"Werewolf": [],
-	"Frankenstein": [],
-	"Witch": [],
-	"Mummy": [],
+	"Potato": [],
+	"Clown": ["E"],
+	"Vampire": ["A", "B", "C"],
+	"Goblin": ["J"],
 }
 
 const WORKPLACE_CLEARANCE_LEVELS := {
@@ -134,38 +133,138 @@ const NAME_SECTOR_RULES := {
 const MAX_PERMIT_DURATION_YEARS := {
 	"Zombie": 2,
 	"Frankenstein": 2,
-	"Werewolf": 5,
-	"Witch": 5,
-	"Troll": 5,
-	"Sea Monster": 20,
 	"Mummy": 20,
-	"Ghost": 20,
 	"Dragon": 20,
+	"Ghost": 20,
+	"Potato": 2,
+	"Clown": 5,
+	"Vampire": 20,
+	"Goblin": 5,
 }
 
 const RESTRICTED_SPECIALTIES_PER_RACE := {
-	"Ghost": ["Firefighting"],
-	"Sea Monster": ["Firefighting"],
 	"Zombie": ["Translation", "Broadcasting", "Speech"],
-	"Troll": ["Robotics", "Programming", "Hardware"],
-	"Werewolf": [],
 	"Frankenstein": [],
-	"Witch": [],
 	"Mummy": [],
 	"Dragon": [],
+	"Ghost": ["Firefighting"],
+	"Potato": ["Firefighting"],
+	"Clown": ["Surgeon", "Investigator"],
+	"Vampire": ["Farming", "Piloting"],
+	"Goblin": ["Finance", "Records"],
 }
 
 const BODY_TEMP_RANGES_CELSIUS := {
-	"Ghost": {"min": -20.0, "max": 10.0},
 	"Zombie": {"min": 0.0, "max": 10.0},
-	"Mummy": {"min": 5.0, "max": 15.0},
-	"Werewolf": {"min": 36.0, "max": 39.0},
-	"Witch": {"min": 36.0, "max": 37.5},
 	"Frankenstein": {"min": 30.0, "max": 35.0},
-	"Troll": {"min": 35.0, "max": 38.0},
-	"Sea Monster": {"min": 10.0, "max": 22.0},
+	"Mummy": {"min": 5.0, "max": 15.0},
 	"Dragon": {"min": 80.0, "max": 200.0},
+	"Ghost": {"min": -20.0, "max": 10.0},
+	"Potato": {"min": 4.0, "max": 12.0},
+	"Clown": {"min": 36.0, "max": 38.0},
+	"Vampire": {"min": 8.0, "max": 18.0},
+	"Goblin": {"min": 33.0, "max": 37.0},
 }
+
+# -------------------------------------------------------------------------
+# DAY-BY-DAY RULE ROLLOUT
+# -------------------------------------------------------------------------
+
+# Day 1 runs the first stage only; each following day adds the next one, and
+# past the end everything is in play. This single list decides which fields
+# the card shows, which checks run, which mistakes can be injected, and which
+# rulebook pages exist - so the card can never carry a field the player has no
+# rule for, and the rulebook can never be missing a rule that is being tested.
+#
+# check  - the validate_document() code this stage turns on
+# fields - FIELD_NODES keys the card starts showing
+# book   - rulebook pages whose header starts with this become available
+const RULE_STAGES: Array[Dictionary] = [
+	{
+		"check": "AGE",
+		"fields": ["name", "race", "age"],
+		"book": "AGE LIMITS",
+	},
+	{
+		"check": "WORKSPACE / SPECIALTY",
+		"fields": ["workspace", "specialty"],
+		"book": "WORKSPACES",
+	},
+	{
+		"check": "SECTOR",
+		"fields": ["sector"],
+		"book": "RESTRICTED SECTORS",
+	},
+	{
+		"check": "NAME / SECTOR",
+		"fields": [],
+		"book": "NAME -> SECTOR",
+	},
+	{
+		"check": "CLEARANCE",
+		"fields": ["clearance"],
+		"book": "CLEARANCE",
+	},
+	{
+		"check": "PERMIT DURATION",
+		"fields": ["permit"],
+		"book": "PERMIT DURATION",
+	},
+	{
+		"check": "BODY TEMPERATURE",
+		"fields": ["temp"],
+		"book": "BODY TEMP",
+	},
+	{
+		"check": "SPECIALTY",
+		"fields": [],
+		"book": "SPECIALTY BANS",
+	},
+]
+
+# Which nodes under Fields make up each row of the card.
+const FIELD_NODES := {
+	"name": ["NameCaption", "NameValue"],
+	"age": ["AgeCaption", "AgeValue"],
+	"race": ["RaceCaption", "RaceValue"],
+	"workspace": ["WorkspaceCaption", "WorkspaceValue"],
+	"specialty": ["SpecialtyCaption", "SpecialtyValue"],
+	"sector": ["SectorCaption", "SectorValue"],
+	"clearance": ["ClearanceCaption", "ClearanceValue"],
+	"permit": [
+		"PermitIssueCaption", "PermitIssueValue",
+		"PermitExpieryCaption", "PermitExpiryValue",
+	],
+	"temp": ["BodyTempCaption", "BodyTempValue"],
+}
+
+
+## How many stages are live on a given day.
+static func stages_unlocked(day: int) -> int:
+	return clampi(day, 1, RULE_STAGES.size())
+
+
+static func active_checks(day: int) -> Array[String]:
+	var out: Array[String] = []
+	for i in stages_unlocked(day):
+		out.append(str(RULE_STAGES[i]["check"]))
+	return out
+
+
+static func active_fields(day: int) -> Array[String]:
+	var out: Array[String] = []
+	for i in stages_unlocked(day):
+		for field in RULE_STAGES[i]["fields"]:
+			out.append(str(field))
+	return out
+
+
+static func active_book_tags(day: int) -> Array[String]:
+	var out: Array[String] = []
+	for i in stages_unlocked(day):
+		out.append(str(RULE_STAGES[i]["book"]))
+	return out
+
 
 # -------------------------------------------------------------------------
 # UI REFERENCES
@@ -179,7 +278,9 @@ const BODY_TEMP_RANGES_CELSIUS := {
 @onready var workspace_label: Label = $"Fields/WorkspaceValue"
 @onready var specialty_label: Label = $"Fields/SpecialtyValue"
 @onready var sector_label: Label = $"Fields/SectorValue"
-@onready var online_label: Label = $"Fields/OnlineValue"
+# No OnlineValue label in the scene any more - the ONLINE row was replaced by
+# CLEARANCE / PERMIT / TEMP. document_online is still rolled below, so add the
+# @onready back here if you put the field on the card again.
 
 @onready var clearance_label: Label = $"Fields/ClearanceValue"
 @onready var permit_issue_label: Label = $"Fields/PermitIssueValue"
@@ -202,15 +303,12 @@ var stamp_decision: String = "unprocessed"
 var document_id: int = 0
 var has_discrepancy: bool = false
 
-var _drag_start_pos := Vector2.ZERO
-
 var document_name: String = ""
 var document_age: int = 0
 var document_race: String = ""
 var document_workspace: String = ""
 var document_specialty: String = ""
 var document_sector: String = ""
-var document_online: bool = false
 
 var security_clearance: int = 0
 var permit_issue_year: int = 0
@@ -224,7 +322,10 @@ var body_temperature: float = 0.0
 func _ready() -> void:
 	position = HIDDEN_POS
 	visible = false
-	_reset_stamp_visibilities()
+	clear_mark()
+
+	# A fresh Game.tscn means a fresh day, so numbering restarts at 1.
+	current_day_id = 1
 
 	add_to_group("document")
 
@@ -234,52 +335,69 @@ func _ready() -> void:
 # CUSTOMER / DOCUMENT FLOW
 # -------------------------------------------------------------------------
 
+# Only People emits customer_arrived, and only once they reach the counter, so
+# the sheet is rolled exactly once per customer and slides in as they arrive.
 func on_customer_arrived() -> void:
 	roll_person()
 	slide_to(SHOWN_POS)
-
-func on_next_customer_requested() -> void:
-	leave()
-
-func leave() -> void:
-	dragging = false
-	slide_to(HIDDEN_POS)
-
-	tween.finished.connect(func() -> void:
-		visible = false
-	)
 
 # -------------------------------------------------------------------------
 # GENERATE DOCUMENT
 # -------------------------------------------------------------------------
 
 func roll_person() -> void:
+	roll_clean_person()
+
+	if randf() < FLAW_CHANCE:
+		make_one_field_wrong()
+
+	# Ask the rule checks rather than trusting the roll, so the answer key
+	# always matches what is actually printed on the card.
+	var faults := validate_document()
+	has_discrepancy = not faults.is_empty()
+	print("[DOCUMENT #%d] %s" % [
+		document_id,
+		"OK" if faults.is_empty() else "faults: " + ", ".join(faults),
+	])
+
+
+# Builds a sheet that passes every rule. Sabotage is applied afterwards, on
+# top - keeping the two apart is what makes FLAW_CHANCE mean what it says.
+func roll_clean_person() -> void:
 	visible = true
 	is_stamped = false
 	stamp_decision = "unprocessed"
 	has_discrepancy = false
-	
+
 	document_id = current_day_id
 	current_day_id += 1
 
-	_reset_stamp_visibilities()
+	clear_mark()
+	apply_day_fields()
 
+	# Whoever walked in decides the species; the card just describes them. Falls
+	# back to a roll so the document can still be generated on its own.
+	#
+	# Race is settled first either way: it constrains which surnames and
+	# specialties can still make a legal document, and an untouched sheet must
+	# always be legal, or FLAW_CHANCE would not mean what it says.
+	document_race = Global.current_race
+	if not document_race in RACES:
+		document_race = RACES.pick_random()
+
+	var surnames := surnames_for_race(document_race)
 	document_name = "%s %s" % [
 		FIRST_NAMES.pick_random(),
-		LAST_NAMES.pick_random()
+		surnames.pick_random(),
 	]
-
-	document_race = RACES.pick_random()
 
 	var age_data: Dictionary = RACE_AGE_LIMITS[document_race]
 	document_age = randi_range(int(age_data["min"]), int(age_data["max"]))
 
 	document_workspace = str(WORKSPACES.keys().pick_random())
-	var valid_specialties: Array = WORKSPACES[document_workspace]
-	document_specialty = str(valid_specialties.pick_random())
+	document_specialty = pick_specialty(document_workspace, document_race)
 
 	document_sector = get_valid_sector_for_document()
-	document_online = randi() % 2 == 0
 
 	var required_clearance: int = WORKPLACE_CLEARANCE_LEVELS[document_workspace]
 	security_clearance = randi_range(required_clearance, 4)
@@ -304,26 +422,59 @@ func roll_person() -> void:
 	permit_expiry_label.text = str(permit_expiry_year)
 	body_temp_label.text = "%.1f °C" % body_temperature
 
-	var failure_roll := randi_range(1, 5)
-	print("[DOCUMENT #%d] Failure roll = %d" % [document_id, failure_roll])
+# Which sectors a surname opens up. Shared by generation, sabotage and the
+# rule check so all three can never disagree about the same name.
+static func allowed_sectors_for_name(full_name: String) -> Array:
+	var parts := full_name.split(" ")
+	if parts.is_empty():
+		return []
 
-	if failure_roll == 1:
-		has_discrepancy = true
-		make_one_field_wrong()
-
-func get_valid_sector_for_document() -> String:
-	var last_name := document_name.get_slice(" ", 1)
-	var initial := last_name.substr(0, 1).to_upper()
-
-	var allowed_by_name: Array = []
+	var initial := String(parts[parts.size() - 1]).substr(0, 1).to_upper()
 
 	if initial >= "A" and initial <= "G":
-		allowed_by_name = NAME_SECTOR_RULES["A-G"]
-	elif initial >= "H" and initial <= "N":
-		allowed_by_name = NAME_SECTOR_RULES["H-N"]
-	elif initial >= "O" and initial <= "Z":
-		allowed_by_name = NAME_SECTOR_RULES["O-Z"]
-	else:
+		return NAME_SECTOR_RULES["A-G"]
+	if initial >= "H" and initial <= "N":
+		return NAME_SECTOR_RULES["H-N"]
+	if initial >= "O" and initial <= "Z":
+		return NAME_SECTOR_RULES["O-Z"]
+	return []
+
+
+# Surnames that still leave this race somewhere legal to stand. A Troll called
+# Abernathy is unplayable: A-G opens only sectors A, B and C, and Trolls are
+# barred from all three, so no legal card could ever be issued to them.
+static func surnames_for_race(race: String) -> Array[String]:
+	var restricted: Array = RESTRICTED_SECTORS_PER_RACE.get(race, [])
+	var usable: Array[String] = []
+
+	for surname in LAST_NAMES:
+		for sector in allowed_sectors_for_name("_ " + surname):
+			if not sector in restricted:
+				usable.append(surname)
+				break
+
+	return usable if not usable.is_empty() else LAST_NAMES
+
+
+# A job this workspace offers that this race is not banned from, so a clean
+# sheet never trips the specialty ban by accident.
+static func pick_specialty(workspace: String, race: String) -> String:
+	var banned: Array = RESTRICTED_SPECIALTIES_PER_RACE.get(race, [])
+	var offered: Array = WORKSPACES[workspace]
+	var usable: Array = []
+
+	for specialty in offered:
+		if not specialty in banned:
+			usable.append(specialty)
+
+	if usable.is_empty():
+		return str(offered.pick_random())
+	return str(usable.pick_random())
+
+
+func get_valid_sector_for_document() -> String:
+	var allowed_by_name := allowed_sectors_for_name(document_name)
+	if allowed_by_name.is_empty():
 		return "A"
 
 	var restricted: Array = RESTRICTED_SECTORS_PER_RACE[document_race]
@@ -338,35 +489,45 @@ func get_valid_sector_for_document() -> String:
 
 	return str(valid_sectors.pick_random())
 
+# Break exactly one of the rules that are actually in play today, so the
+# player always has the rule and the field needed to catch it.
 func make_one_field_wrong() -> void:
-	var possible_failures := [
-		"AGE",
-		"SECTOR",
-		"CLEARANCE",
-		"NAME_SECTOR",
-		"PERMIT",
-		"SPECIALTY",
-		"TEMPERATURE"
-	]
+	var candidates := active_checks(Global.current_day)
+	candidates.shuffle()
 
-	var failure_type: String = possible_failures.pick_random()
-	print("[DOCUMENT #%d] Creating discrepancy: %s" % [document_id, failure_type])
+	for code in candidates:
+		if break_rule(code):
+			return
 
-	match failure_type:
+
+# Returns false when this rule cannot be broken for this document - a race with
+# no banned specialties, say - so the caller can try another.
+func break_rule(code: String) -> bool:
+	match code:
 		"AGE":
 			make_age_wrong()
+			return true
 		"SECTOR":
-			make_sector_wrong()
+			return make_sector_restricted_wrong()
 		"CLEARANCE":
 			make_clearance_wrong()
-		"NAME_SECTOR":
-			make_name_sector_wrong()
-		"PERMIT":
+			return true
+		"NAME / SECTOR":
+			# Moves them to a sector their surname does not open.
+			make_sector_wrong()
+			return true
+		"PERMIT DURATION":
 			make_permit_wrong()
-		"SPECIALTY":
+			return true
+		"WORKSPACE / SPECIALTY":
 			make_specialty_wrong()
-		"TEMPERATURE":
+			return true
+		"BODY TEMPERATURE":
 			make_temperature_wrong()
+			return true
+		"SPECIALTY":
+			return make_banned_specialty_wrong()
+	return false
 
 func make_age_wrong() -> void:
 	var limits: Dictionary = RACE_AGE_LIMITS[document_race]
@@ -380,18 +541,56 @@ func make_age_wrong() -> void:
 
 	age_label.text = str(document_age)
 
+# Puts the applicant in a sector their race is barred from. Not every race has
+# one, so this reports whether it managed.
+func make_sector_restricted_wrong() -> bool:
+	var restricted: Array = RESTRICTED_SECTORS_PER_RACE.get(document_race, [])
+	if restricted.is_empty():
+		return false
+
+	# Prefer a barred sector their surname still allows, so this breaks the
+	# race restriction on its own instead of dragging NAME / SECTOR with it.
+	var allowed := allowed_sectors_for_name(document_name)
+	var clean: Array = []
+	for sector in restricted:
+		if sector in allowed:
+			clean.append(sector)
+
+	var pool: Array = clean if not clean.is_empty() else restricted
+	document_sector = str(pool.pick_random())
+	sector_label.text = document_sector
+	return true
+
+
+# Gives the applicant a specialty their race is banned from, moving them to a
+# workspace that really offers it so only the ban is broken.
+func make_banned_specialty_wrong() -> bool:
+	var banned: Array = RESTRICTED_SPECIALTIES_PER_RACE.get(document_race, [])
+	var options: Array[Dictionary] = []
+
+	for specialty in banned:
+		for workspace in WORKSPACES:
+			if specialty in WORKSPACES[workspace]:
+				options.append({"workspace": workspace, "specialty": specialty})
+
+	if options.is_empty():
+		return false
+
+	var pick: Dictionary = options.pick_random()
+	document_workspace = str(pick["workspace"])
+	document_specialty = str(pick["specialty"])
+	workspace_label.text = document_workspace
+	specialty_label.text = document_specialty
+
+	# Keep clearance legal for the new workspace, or two rules break at once.
+	var required: int = WORKPLACE_CLEARANCE_LEVELS[document_workspace]
+	security_clearance = randi_range(required, 4)
+	clearance_label.text = str(security_clearance)
+	return true
+
+
 func make_sector_wrong() -> void:
-	var last_name := document_name.get_slice(" ", 1)
-	var initial := last_name.substr(0, 1).to_upper()
-	var allowed_by_name: Array = []
-
-	if initial >= "A" and initial <= "G":
-		allowed_by_name = NAME_SECTOR_RULES["A-G"]
-	elif initial >= "H" and initial <= "N":
-		allowed_by_name = NAME_SECTOR_RULES["H-N"]
-	elif initial >= "O" and initial <= "Z":
-		allowed_by_name = NAME_SECTOR_RULES["O-Z"]
-
+	var allowed_by_name := allowed_sectors_for_name(document_name)
 	var restricted: Array = RESTRICTED_SECTORS_PER_RACE[document_race]
 	var wrong_sectors: Array = []
 
@@ -470,27 +669,30 @@ func make_temperature_wrong() -> void:
 # VALIDATION
 # -------------------------------------------------------------------------
 
+# Only the rules in play today count. A field the card is not even showing
+# must never make a document "wrong".
 func validate_document() -> Array[String]:
 	var discrepancies: Array[String] = []
+	var live := active_checks(Global.current_day)
 
-	if not check_age():
-		discrepancies.append("AGE")
-	if not check_sector_restriction():
-		discrepancies.append("SECTOR")
-	if not check_clearance():
-		discrepancies.append("CLEARANCE")
-	if not check_name_sector():
-		discrepancies.append("NAME / SECTOR")
-	if not check_permit_duration():
-		discrepancies.append("PERMIT DURATION")
-	if not check_specialty():
-		discrepancies.append("SPECIALTY")
-	if not check_workspace_specialty():
-		discrepancies.append("WORKSPACE / SPECIALTY")
-	if not check_body_temperature():
-		discrepancies.append("BODY TEMPERATURE")
+	for code in live:
+		if not run_check(code):
+			discrepancies.append(code)
 
 	return discrepancies
+
+
+func run_check(code: String) -> bool:
+	match code:
+		"AGE": return check_age()
+		"SECTOR": return check_sector_restriction()
+		"CLEARANCE": return check_clearance()
+		"NAME / SECTOR": return check_name_sector()
+		"PERMIT DURATION": return check_permit_duration()
+		"SPECIALTY": return check_specialty()
+		"WORKSPACE / SPECIALTY": return check_workspace_specialty()
+		"BODY TEMPERATURE": return check_body_temperature()
+	return true
 
 func check_age() -> bool:
 	if not RACE_AGE_LIMITS.has(document_race):
@@ -511,23 +713,9 @@ func check_clearance() -> bool:
 	return security_clearance >= required
 
 func check_name_sector() -> bool:
-	var parts := document_name.split(" ")
-	if parts.size() < 2:
+	var allowed_sectors := allowed_sectors_for_name(document_name)
+	if allowed_sectors.is_empty():
 		return false
-
-	var last_name: String = parts[parts.size() - 1]
-	var initial := last_name.substr(0, 1).to_upper()
-	var allowed_sectors: Array = []
-
-	if initial >= "A" and initial <= "G":
-		allowed_sectors = NAME_SECTOR_RULES["A-G"]
-	elif initial >= "H" and initial <= "N":
-		allowed_sectors = NAME_SECTOR_RULES["H-N"]
-	elif initial >= "O" and initial <= "Z":
-		allowed_sectors = NAME_SECTOR_RULES["O-Z"]
-	else:
-		return false
-
 	return document_sector in allowed_sectors
 
 func check_permit_duration() -> bool:
@@ -578,17 +766,15 @@ func sheet_rect() -> Rect2:
 func event_world_pos(event: InputEventMouse) -> Vector2:
 	return get_viewport().get_canvas_transform().affine_inverse() * event.position
 
-func customer_rect() -> Rect2:
-	var customer := get_tree().get_first_node_in_group("customer")
-	if customer == null or not (customer is Node2D):
-		return Rect2()
+# The drop area, centred on the applicant. A little wider than they are so
+# handing the sheet back does not need precise aim.
+const CUSTOMER_SIZE := Vector2(60, 66)
 
-	var n := customer as Node2D
-	var size := n.get("body_size") if "body_size" in n else Vector2(40, 60)
-	return Rect2(
-		n.global_position - size * 0.5,
-		size
-	)
+func drop_rect() -> Rect2:
+	var customer := get_tree().get_first_node_in_group("customer") as Node2D
+	if customer == null:
+		return Rect2()
+	return Rect2(customer.global_position - CUSTOMER_SIZE * 0.5, CUSTOMER_SIZE)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
@@ -599,7 +785,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 		if event.pressed and sheet_rect().has_point(at):
 			dragging = true
-			_drag_start_pos = global_position
 			drag_offset = global_position - at
 
 			if tween and tween.is_valid():
@@ -611,7 +796,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			dragging = false
 			var drop_at := event_world_pos(event)
 
-			if customer_rect().has_point(drop_at):
+			if drop_rect().has_point(drop_at):
 				hand_to_customer()
 
 			get_viewport().set_input_as_handled()
@@ -623,34 +808,38 @@ func _unhandled_input(event: InputEvent) -> void:
 # STAMPING & LOGGING DATA
 # -------------------------------------------------------------------------
 
-func _reset_stamp_visibilities() -> void:
+# Show only the rows whose rules the player has been taught. Values behind a
+# hidden row are still generated and still legal - they are simply not printed
+# on the card yet.
+func apply_day_fields() -> void:
+	var live := active_fields(Global.current_day)
+	for key in FIELD_NODES:
+		var on: bool = str(key) in live
+		for node_name in FIELD_NODES[key]:
+			var row := $Fields.get_node_or_null(NodePath(str(node_name))) as CanvasItem
+			if row != null:
+				row.visible = on
+
+
+func clear_mark() -> void:
 	mark.modulate.a = 0.0
 
+
 func apply_stamp(color: Color, accepted: bool) -> void:
+	# One stamp per sheet - the first verdict sticks.
 	if is_stamped:
 		return
 
 	is_stamped = true
-
-	# Restore color assignment
 	mark.modulate = color
 	mark.modulate.a = 1.0
+	stamp_decision = "approved" if accepted else "disapproved"
+	Audio.play("stamp", 0.05)
+	Global.document_stamped.emit()
 
-	if accepted:
-		stamp_decision = "approved"
-	else:
-		stamp_decision = "disapproved"
 
-	print(
-		"[DOCUMENT] Stamped. accepted=",
-		accepted,
-		" color=",
-		color
-	)
 func hand_to_customer() -> void:
 	dragging = false
-
-	# Save entry into Global state
 	save_document_to_history()
 
 	if tween and tween.is_valid():
@@ -659,8 +848,10 @@ func hand_to_customer() -> void:
 	position = HIDDEN_POS
 	visible = false
 
-	# Notify Global that the customer is done
+	Audio.play("paper", 0.06)
+	Audio.play("leave")
 	Global.document_processed.emit()
+
 
 func save_document_to_history() -> void:
 	var entry: Dictionary = {
@@ -672,14 +863,98 @@ func save_document_to_history() -> void:
 		"specialty": document_specialty,
 		"sector": document_sector,
 		"clearance": security_clearance,
-		"date_expiry": str(permit_expiry_year),
+		"date_issue": permit_issue_year,
+		"date_expiry": permit_expiry_year,
 		"temp": body_temperature,
 		"is_correct": not has_discrepancy,
-		"status": stamp_decision
+		"status": stamp_decision,
+		# Which rules this sheet broke, so the end-of-day screen can explain
+		# a mistake without re-deriving it from the values.
+		"faults": validate_document(),
 	}
 
 	Global.daily_documents.append(entry)
-	
-	print("--- NEW ENTRY LOGGED TO GLOBAL ---")
-	print(entry)
-	print("----------------------------------")
+
+# -------------------------------------------------------------------------
+# FAULT EXPLANATIONS
+# -------------------------------------------------------------------------
+
+# Turns a saved entry's fault codes into rows for the end-of-day review:
+# the document value that broke a rule, and the rule it broke, both filled in
+# with this document's own numbers. Static so the summary screen can call it
+# without a Document node in the tree.
+static func explain_faults(entry: Dictionary) -> Array[Dictionary]:
+	var rows: Array[Dictionary] = []
+	var race := str(entry.get("race", ""))
+	var workspace := str(entry.get("workspace", ""))
+
+	for code in entry.get("faults", []):
+		match str(code):
+			"AGE":
+				var limits: Dictionary = RACE_AGE_LIMITS.get(race, {})
+				rows.append({
+					"field": "AGE  %s" % entry.get("age", "?"),
+					"rule": "%s: %s-%s yrs" % [
+						race, limits.get("min", "?"), limits.get("max", "?"),
+					],
+				})
+			"SECTOR":
+				var barred: Array = RESTRICTED_SECTORS_PER_RACE.get(race, [])
+				rows.append({
+					"field": "SECTOR  %s" % entry.get("sector", "?"),
+					"rule": "%s barred from %s" % [race, ", ".join(barred)],
+				})
+			"NAME / SECTOR":
+				var surname := str(entry.get("name", "")).get_slice(" ", 1)
+				var allowed := allowed_sectors_for_name(str(entry.get("name", "")))
+				rows.append({
+					"field": "SECTOR  %s" % entry.get("sector", "?"),
+					"rule": "%s allows %s" % [surname, ", ".join(allowed)],
+				})
+			"CLEARANCE":
+				rows.append({
+					"field": "CLEARANCE  %s" % entry.get("clearance", "?"),
+					"rule": "%s needs lvl %s" % [
+						workspace, WORKPLACE_CLEARANCE_LEVELS.get(workspace, "?"),
+					],
+				})
+			"PERMIT DURATION":
+				rows.append({
+					"field": "PERMIT  %s-%s" % [
+						entry.get("date_issue", "?"), entry.get("date_expiry", "?"),
+					],
+					"rule": "%s: max %s yrs" % [
+						race, MAX_PERMIT_DURATION_YEARS.get(race, "?"),
+					],
+				})
+			"SPECIALTY":
+				var banned: Array = RESTRICTED_SPECIALTIES_PER_RACE.get(race, [])
+				rows.append({
+					"field": "SPECIALTY  %s" % entry.get("specialty", "?"),
+					"rule": "%s cannot: %s" % [race, ", ".join(banned)],
+				})
+			"WORKSPACE / SPECIALTY":
+				rows.append({
+					"field": "SPECIALTY  %s" % entry.get("specialty", "?"),
+					"rule": "%s has no such role" % workspace,
+				})
+			"BODY TEMPERATURE":
+				var range_data: Dictionary = BODY_TEMP_RANGES_CELSIUS.get(race, {})
+				rows.append({
+					"field": "TEMP  %.1f" % float(entry.get("temp", 0.0)),
+					"rule": "%s: %s-%s C" % [
+						race,
+						_trim_zero(range_data.get("min", "?")),
+						_trim_zero(range_data.get("max", "?")),
+					],
+				})
+			_:
+				rows.append({"field": str(code), "rule": "Broke a rule"})
+
+	return rows
+
+
+# Whole-number temperatures read better without the trailing ".0", but the
+# fractional limits (Witch tops out at 37.5) have to survive.
+static func _trim_zero(value: Variant) -> String:
+	return str(value).trim_suffix(".0")

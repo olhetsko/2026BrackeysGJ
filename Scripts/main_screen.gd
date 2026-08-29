@@ -1,10 +1,14 @@
 extends Control
 
-@onready var play_button: Button = $play
+# Title screen. main_screen.tscn wires play.pressed straight to
+# _on_play_pressed, so nothing is connected here.
 
 func _ready() -> void:
-	play_button.pressed.connect(_on_play_pressed)
+	# The drone starts here and is never stopped, so it carries through the
+	# menu, the day and the summary without restarting at each scene change.
+	Audio.start_music()
+
 
 func _on_play_pressed() -> void:
-	# Change to your main gameplay scene path
+	Audio.play("click")
 	get_tree().change_scene_to_file("res://Game/Game.tscn")

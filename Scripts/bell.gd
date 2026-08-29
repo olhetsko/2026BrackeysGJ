@@ -21,6 +21,7 @@ func _on_button_button_down() -> void:
 	# but guard anyway in case the signal is fired from elsewhere.
 	if not _cooldown_timer.is_stopped():
 		return
+	Audio.play("bell", 0.03)
 	Global.next_customer_requested.emit()
 	_button.disabled = true
 	_cooldown_timer.start()
