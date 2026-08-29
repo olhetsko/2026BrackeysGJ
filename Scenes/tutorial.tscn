@@ -1,0 +1,83 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/tutorial.gd" id="1_tut00"]
+[ext_resource type="FontFile" uid="uid://si3fj572hj3y" path="res://Assets/fonts/PixelOperator8.ttf" id="2_tut01"]
+[ext_resource type="FontFile" uid="uid://dap74o686yqd8" path="res://Assets/fonts/PixelOperator8-Bold.ttf" id="3_tut02"]
+
+[node name="Tutorial" type="CanvasLayer" unique_id=911420033]
+layer = 10
+
+[node name="Overlay" type="Control" parent="." unique_id=911420034]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("1_tut00")
+
+[node name="Panel" type="ColorRect" parent="Overlay" unique_id=911420035]
+layout_mode = 0
+offset_left = 176.0
+offset_top = 16.0
+offset_right = 976.0
+offset_bottom = 124.0
+color = Color(0.078431375, 0.08627451, 0.10980392, 0.92156863)
+
+[node name="Accent" type="ColorRect" parent="Overlay/Panel" unique_id=911420036]
+layout_mode = 0
+offset_right = 6.0
+offset_bottom = 108.0
+mouse_filter = 2
+color = Color(1, 0.81960785, 0.29803923, 1)
+
+[node name="StepIndex" type="Label" parent="Overlay/Panel" unique_id=911420037]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 12.0
+offset_right = 780.0
+offset_bottom = 32.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.5, 0.52, 0.56, 1)
+theme_override_fonts/font = ExtResource("3_tut02")
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 2
+text = "1 / 6"
+
+[node name="StepText" type="RichTextLabel" parent="Overlay/Panel" unique_id=911420038]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 12.0
+offset_right = 648.0
+offset_bottom = 96.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(0.92, 0.93, 0.95, 1)
+theme_override_fonts/normal_font = ExtResource("2_tut01")
+theme_override_fonts/bold_font = ExtResource("3_tut02")
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 16
+bbcode_enabled = true
+text = "Ring the bell."
+scroll_active = false
+
+[node name="ActionButton" type="Button" parent="Overlay/Panel" unique_id=911420039]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 44.0
+offset_right = 780.0
+offset_bottom = 72.0
+focus_mode = 0
+theme_override_fonts/font = ExtResource("3_tut02")
+theme_override_font_sizes/font_size = 14
+text = "GOT IT"
+
+[node name="SkipButton" type="Button" parent="Overlay/Panel" unique_id=911420040]
+layout_mode = 0
+offset_left = 660.0
+offset_top = 78.0
+offset_right = 780.0
+offset_bottom = 100.0
+focus_mode = 0
+theme_override_colors/font_color = Color(0.55, 0.57, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_tut01")
+theme_override_font_sizes/font_size = 12
+text = "skip"

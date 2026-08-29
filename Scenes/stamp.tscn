@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c5t4mp0bj7q2x"]
 
-[ext_resource type="Script" uid="uid://d2s0hllr3n6q5" path="res://Scripts/greenstamp.gd" id="1_govvf"]
+[ext_resource type="Script" path="res://Scripts/stamp.gd" id="1_govvf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4syrc"]
 size = Vector2(40, 31)
@@ -8,6 +8,8 @@ size = Vector2(40, 31)
 [node name="Stamp" type="Node2D" unique_id=884213770]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_govvf")
+stamp_color = Color(0.07450981, 0.91764706, 0, 1)
+accepts = true
 
 [node name="Handle" type="ColorRect" parent="." unique_id=279200291]
 offset_left = -9.0

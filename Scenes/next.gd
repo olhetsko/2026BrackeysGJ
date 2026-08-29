@@ -1,11 +1,7 @@
-# NextButton.gd
 extends Node2D
 
-@onready var button: Button = $Button
-
-func _ready() -> void:
-	button.pressed.connect(_on_button_pressed)
+# The Next Day button. next.tscn wires Button.pressed straight to this.
 
 func _on_button_pressed() -> void:
-	print("[NEXT BUTTON] Pressed! Emitting signal...")
+	Audio.play("click")
 	Global.next_day_requested.emit()

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c5hsdd1ihkcgc"]
 
-[ext_resource type="Script" uid="uid://cv7ktb7td7wtd" path="res://Scripts/redstamp.gd" id="1_csry7"]
+[ext_resource type="Script" path="res://Scripts/stamp.gd" id="1_csry7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tdu44"]
 size = Vector2(40, 31)
@@ -8,6 +8,8 @@ size = Vector2(40, 31)
 [node name="RedStamp" type="Node2D" unique_id=444249098]
 scale = Vector2(0.5, 0.5)
 script = ExtResource("1_csry7")
+stamp_color = Color(0.91764706, 0.07450981, 0, 1)
+accepts = false
 
 [node name="Handle" type="ColorRect" parent="." unique_id=740864739]
 offset_left = -9.0

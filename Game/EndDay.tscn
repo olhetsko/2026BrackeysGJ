@@ -8,13 +8,6 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_s3wx3")
 
-[node name="GridContainer" type="GridContainer" parent="." unique_id=1718643771]
-layout_mode = 0
-offset_left = -34.0
-offset_top = -21.0
-offset_bottom = 18.0
-columns = 3
-
 [node name="ColorRect" type="ColorRect" parent="." unique_id=818178127]
 layout_mode = 0
 offset_left = -41.0
@@ -30,25 +23,114 @@ offset_top = -21.0
 offset_bottom = 18.0
 color = Color(0.31061712, 0.31061712, 0.31061706, 1)
 
-[node name="Label" type="Label" parent="." unique_id=172036987]
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1718643771]
+texture_filter = 1
 layout_mode = 0
-offset_left = 14.0
-offset_top = -23.0
-offset_right = 54.0
-scale = Vector2(0.34285915, 0.43035826)
+offset_left = -33.0
+offset_top = -20.0
+offset_right = 276.99997
+offset_bottom = 169.99998
+scale = Vector2(0.1, 0.1)
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 0
+columns = 3
+
+[node name="Review" type="Control" parent="." unique_id=771034700]
+anchors_preset = 0
+offset_left = -33.0
+offset_top = 2.0
+offset_right = 250.0
+offset_bottom = 142.0
+scale = Vector2(0.12, 0.12)
+
+[node name="Divider" type="ColorRect" parent="Review" unique_id=771034701]
+layout_mode = 0
+offset_right = 283.0
+offset_bottom = 1.0
+color = Color(0.5, 0.5, 0.5, 1)
+
+[node name="Title" type="Label" parent="Review" unique_id=771034702]
+texture_filter = 1
+layout_mode = 0
+offset_top = 8.333333
+offset_right = 190.0
+offset_bottom = 20.333332
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 8
+text = "MISTAKES"
+
+[node name="Index" type="Label" parent="Review" unique_id=771034703]
+texture_filter = 1
+layout_mode = 0
+offset_left = 175.0
+offset_top = 8.333333
+offset_right = 268.0
+offset_bottom = 20.333332
+theme_override_colors/font_color = Color(0.65, 0.65, 0.65, 1)
+theme_override_font_sizes/font_size = 8
+text = "1 / 1"
+horizontal_alignment = 2
+
+[node name="DocLabel" type="Label" parent="Review" unique_id=771034704]
+texture_filter = 1
+layout_mode = 0
+offset_top = 25.0
+offset_right = 283.0
+offset_bottom = 37.0
+theme_override_colors/font_color = Color(0.85, 0.78, 0.55, 1)
+theme_override_font_sizes/font_size = 8
+text = "[1] Name"
+
+[node name="FaultGrid" type="GridContainer" parent="Review" unique_id=771034705]
+layout_mode = 0
+offset_top = 41.666668
+offset_right = 266.66666
+offset_bottom = 112.0
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 3
+columns = 2
+
+[node name="Prev" type="Button" parent="Review" unique_id=771034706]
+layout_mode = 0
+offset_top = 108.333336
+offset_right = 40.000008
+offset_bottom = 128.33334
+focus_mode = 0
+theme_override_font_sizes/font_size = 8
+text = "<"
+
+[node name="Next" type="Button" parent="Review" unique_id=771034707]
+layout_mode = 0
+offset_left = 225.0
+offset_top = 108.333336
+offset_right = 265.0
+offset_bottom = 128.33334
+focus_mode = 0
+theme_override_font_sizes/font_size = 8
+text = ">"
+
+[node name="Label" type="Label" parent="." unique_id=172036987]
+texture_filter = 1
+layout_mode = 0
+offset_left = 12.0
+offset_top = -22.0
+offset_right = 227.83206
+offset_bottom = 68.62217
+scale = Vector2(0.06826494, 0.08699354)
 theme_override_fonts/font = ExtResource("2_jmi45")
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 71
 text = "day"
 
 [node name="Button" type="Button" parent="." unique_id=1618045940]
+texture_filter = 1
 layout_mode = 0
 offset_left = 6.0
 offset_top = 9.000001
-offset_right = 51.0
-offset_bottom = 23.0
-scale = Vector2(0.678235, 0.6824171)
+offset_right = 259.5994
+offset_bottom = 114.507324
+scale = Vector2(0.08890104, 0.08944922)
 theme_override_fonts/font = ExtResource("2_jmi45")
-theme_override_font_sizes/font_size = 5
+theme_override_font_sizes/font_size = 44
 text = "Next Day"
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=789461358]
