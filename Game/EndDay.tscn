@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://orlsg6jej0n3"]
+
+[ext_resource type="Script" uid="uid://dr7n6mvw7gavu" path="res://Scripts/End day.gd" id="1_s3wx3"]
+[ext_resource type="FontFile" uid="uid://dap74o686yqd8" path="res://Assets/fonts/PixelOperator8-Bold.ttf" id="2_jmi45"]
+
+[node name="End day" type="Control" unique_id=955027991]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_s3wx3")
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1718643771]
+layout_mode = 0
+offset_left = -34.0
+offset_top = -21.0
+offset_bottom = 18.0
+columns = 3
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=818178127]
+layout_mode = 0
+offset_left = -41.0
+offset_top = -26.0
+offset_right = 41.0
+offset_bottom = 20.0
+color = Color(0.3553136, 0.35531354, 0.35531357, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=418729981]
+layout_mode = 0
+offset_left = -34.0
+offset_top = -21.0
+offset_bottom = 18.0
+color = Color(0.31061712, 0.31061712, 0.31061706, 1)
+
+[node name="Label" type="Label" parent="." unique_id=172036987]
+layout_mode = 0
+offset_left = 14.0
+offset_top = -23.0
+offset_right = 54.0
+scale = Vector2(0.34285915, 0.43035826)
+theme_override_fonts/font = ExtResource("2_jmi45")
+theme_override_font_sizes/font_size = 10
+text = "day"
+
+[node name="Button" type="Button" parent="." unique_id=1618045940]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 9.000001
+offset_right = 51.0
+offset_bottom = 23.0
+scale = Vector2(0.678235, 0.6824171)
+theme_override_fonts/font = ExtResource("2_jmi45")
+theme_override_font_sizes/font_size = 5
+text = "Next Day"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=789461358]
+position = Vector2(0, -3)
+zoom = Vector2(14, 14)

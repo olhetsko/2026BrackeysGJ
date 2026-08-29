@@ -180,7 +180,7 @@ extends Node2D
 			"Mummy     5  ->  15\n" +
 			"Sea Mons. 10  ->  22\n" +
 			"Fra-stein 30  ->  35\n" +
-			"Troll     35  ->  38\n" +
+			"Troll       35  ->  38\n" +
 			"Werewolf  36  ->  39\n" +
 			"Witch     36  ->  37.5\n" +
 			"Dragon    80  ->  200\n\n" +

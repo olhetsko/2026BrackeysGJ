@@ -8,7 +8,6 @@
 [ext_resource type="PackedScene" uid="uid://c5t4mp0bj7q2x" path="res://Scenes/stamp.tscn" id="6_oscxy"]
 [ext_resource type="PackedScene" uid="uid://dlc08ifi6qaor" path="res://Scenes/Rulebook.tscn" id="7_fuqhk"]
 [ext_resource type="PackedScene" uid="uid://c5hsdd1ihkcgc" path="res://Scenes/Redstamp.tscn" id="8_q6w4l"]
-[ext_resource type="PackedScene" uid="uid://bpqeldrpoiivv" path="res://Scenes/next.tscn" id="9_eqev2"]
 
 [node name="Game" type="Node2D" unique_id=871825224]
 script = ExtResource("1_oscxy")
@@ -52,8 +51,3 @@ position = Vector2(128, 15)
 [node name="RuleBook" parent="." unique_id=688393794 instance=ExtResource("7_fuqhk")]
 position = Vector2(115, 60.999996)
 scale = Vector2(0.56739783, 0.6116763)
-
-[node name="Next" parent="." unique_id=1776632041 instance=ExtResource("9_eqev2")]
-position = Vector2(-141, 21)
-rotation = -0.2617994
-scale = Vector2(0.10038719, 0.10038719)

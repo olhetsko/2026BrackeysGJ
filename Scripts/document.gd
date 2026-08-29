@@ -229,7 +229,6 @@ func _ready() -> void:
 	add_to_group("document")
 
 	Global.customer_arrived.connect(on_customer_arrived)
-	Global.next_customer_requested.connect(on_next_customer_requested)
 
 # -------------------------------------------------------------------------
 # CUSTOMER / DOCUMENT FLOW
@@ -651,7 +650,7 @@ func apply_stamp(color: Color, accepted: bool) -> void:
 func hand_to_customer() -> void:
 	dragging = false
 
-	# Save document entry into master tracking array
+	# Save entry into Global state
 	save_document_to_history()
 
 	if tween and tween.is_valid():
@@ -660,7 +659,8 @@ func hand_to_customer() -> void:
 	position = HIDDEN_POS
 	visible = false
 
-	Global.next_customer_requested.emit()
+	# Notify Global that the customer is done
+	Global.document_processed.emit()
 
 func save_document_to_history() -> void:
 	var entry: Dictionary = {
@@ -678,8 +678,8 @@ func save_document_to_history() -> void:
 		"status": stamp_decision
 	}
 
-	daily_documents.append(entry)
+	Global.daily_documents.append(entry)
 	
-	print("--- NEW ENTRY LOGGED ---")
+	print("--- NEW ENTRY LOGGED TO GLOBAL ---")
 	print(entry)
-	print("------------------------")
+	print("----------------------------------")
